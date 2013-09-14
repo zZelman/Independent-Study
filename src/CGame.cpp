@@ -1,0 +1,149 @@
+#include "CGame.h"
+#include "include_sfml.h"
+
+CGame::CGame()
+{
+	m_pGameWindow = new sf::RenderWindow(sf::VideoMode(800, 600), "Independent Study");
+
+	// NOTE: do not use Virtual Sync and fixed frame rate at once
+//	m_pGameWindow->setVerticalSyncEnabled(true);
+	m_pGameWindow->setFramerateLimit(60);
+
+	isRunning = false;
+	isPaused = false;
+}
+
+
+CGame::~CGame()
+{
+	delete m_pGameWindow;
+	m_pGameWindow = NULL;
+}
+
+
+void CGame::startGame()
+{
+	gameLoop();
+}
+
+
+void CGame::stopGame()
+{
+	isRunning = false;
+}
+
+
+void CGame::gameLoop()
+{
+	isRunning = true;
+
+	while (m_pGameWindow->isOpen() && isRunning)
+	{
+
+		// NOTE: events must be polled within the main window thread
+		sf::Event event;
+		while (m_pGameWindow->pollEvent(event))
+		{
+			// window was closed by user
+			if (event.type == sf::Event::Closed)
+			{
+				m_pGameWindow->close();
+				return;
+			}
+
+			// update game system information (size, focus, etc)
+			bool stateConsumed = input_gameSystem(&event);
+
+			// only allow the user to supply input to the game when not paused
+			//		and the input was not a system call
+			if (!isPaused && !stateConsumed)
+			{
+				input_user(&event);
+			}
+		}
+
+		if (!isPaused) // only update states if game is actively running
+		{
+			update(); // update all game states
+		}
+
+		m_pGameWindow->clear(); // defaults to black opaque
+
+		render(); // render all game things based on their states
+
+		m_pGameWindow->display(); // displays what has been rendered since last clear
+	}
+
+	// if the program flow gets here, its because isRunning was requested as being false
+	//		therefore, you still need to close the window
+	m_pGameWindow->close();
+}
+
+
+bool CGame::input_user(sf::Event* pEvent)
+{
+
+	// keyboard key-press DOWN
+	if (pEvent->type == sf::Event::KeyPressed)
+	{
+		switch (pEvent->key.code)
+		{
+		case sf::Keyboard::Escape:
+			m_pGameWindow->close();
+			return true;
+			break;
+		}
+	}
+
+	// user pressed a mouse button within the game
+	if (pEvent->type == sf::Event::MouseButtonPressed)
+	{
+		if (pEvent->mouseButton.button == sf::Mouse::Right)
+		{
+			return true;
+		}
+		if (pEvent->mouseButton.button == sf::Mouse::Left)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+
+bool CGame::input_gameSystem(sf::Event* pEvent)
+{
+	// user is not looking at game
+	if (pEvent->type == sf::Event::LostFocus)
+	{
+		isPaused = true;
+		return true;
+	}
+
+	// user is looking at the game now
+	if (pEvent->type == sf::Event::GainedFocus)
+	{
+		isPaused = false;
+		return true;
+	}
+
+	// user changed the window size
+	if (pEvent->type == sf::Event::Resized)
+	{
+		// TODO: assign new values for window resized
+		return true;
+	}
+
+	return false;
+}
+
+
+void CGame::update()
+{
+}
+
+
+void CGame::render()
+{
+}
