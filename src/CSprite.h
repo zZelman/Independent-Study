@@ -9,29 +9,27 @@
 #define CSPRITE_H_
 
 #include "include_sfml.h"
+#include "CTexture.h"
 
 class CSprite
 {
 public:
 	CSprite(sf::RenderWindow* pWindow,	// rendering window
-	        int subH, int subW,			// LENGTH sub-image height/width
-	        int numRow, int numCol,		// LENGTH number of sub images
+	        CTexture* pTexture,			// texture that this sprite will be rendering with
 	        int currRow, int currCol);	// LENGTH current sub-image being rendered
 	~CSprite();
-
-	void load(std::string fileName); // loads the specific file into a texture
 
 	void update(); // updates this sprite's state
 	void render(); // renders the sprite to the target window
 
 private:
 	sf::RenderWindow* m_pWindow;	// target rendering window
-	sf::Texture* m_pTexture;		// full texture of this sprite
+	CTexture* m_pTexture;		// full texture of this sprite
 	sf::Sprite* m_pSprite;			// sub-section of the texture being rendered
 
-	int subH, subW; 		// LENGTH height/width of the sub-section images on the texture
-	int numRow, numCol; 	// LENGTH number of sub-section images on the texture
-	int currRow, currCol;	// LENGTH Current (row, col) that is being rendered
+	// * LENGTH Current sub section that is being rendered
+	// * y = row; x = col
+	sf::Vector2<int> currSub;
 
 };
 

@@ -1,16 +1,19 @@
 #include "CGame.h"
 #include "include_sfml.h"
 #include "CSprite.h"
+#include "CTexture.h"
 
 CGame::CGame()
 {
 	initWindow();
 
+	m_pTestTexture = new CTexture("res/ninja (46h 32w).png",
+	                              46, 32,
+	                              2, 6);
+
 	m_pTestSprite = new CSprite(m_pGameWindow,
-	                            46, 32,
-	                            2, 6,
+	                            m_pTestTexture,
 	                            2, 1);
-	m_pTestSprite->load("res/ninja (46h 32w).png");
 
 	isRunning = false;
 	isPaused = false;
@@ -21,6 +24,9 @@ CGame::~CGame()
 {
 	delete m_pGameWindow;
 	m_pGameWindow = NULL;
+
+	delete m_pTestTexture;
+	m_pTestTexture = NULL;
 
 	delete m_pTestSprite;
 	m_pTestSprite = NULL;

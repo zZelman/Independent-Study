@@ -10,6 +10,7 @@
 
 #include "include_sfml.h"
 #include "CSprite.h"
+#include "CTexture.h"
 
 class CGame
 {
@@ -22,6 +23,7 @@ public:
 private:
 	sf::RenderWindow* m_pGameWindow;
 	CSprite* m_pTestSprite;
+	CTexture* m_pTestTexture;
 
 	bool isRunning;
 	bool isPaused;

@@ -7,77 +7,50 @@
 
 #include "CSprite.h"
 #include "include_sfml.h"
+#include "CTexture.h"
 #include <assert.h>
 
 CSprite::CSprite(sf::RenderWindow* pWindow,
-                 int subH, int subW,
-                 int numRow, int numCol,
+                 CTexture* pTexture,
                  int currRow, int currCol)
 {
-#ifdef DEBUG
-	assert(numRow > 0);
-	assert(numCol > 0);
+	m_pWindow	= pWindow;
+	currSub.y	= currRow;
+	currSub.x	= currCol;
 
-	assert(currRow <= numRow);
-	assert(currRow > 0);
+	m_pTexture = pTexture;
 
-	assert(currCol <= numCol);
-	assert(currCol > 0);
-#endif
-
-	m_pWindow 		= pWindow;
-	this->subH 		= subH;
-	this->subW 		= subW;
-	this->numRow 	= numRow;
-	this->numCol 	= numCol;
-	this->currRow	= currRow;
-	this->currCol	= currCol;
-
-	m_pTexture = new sf::Texture();
 	m_pSprite = new sf::Sprite();
+	m_pSprite->setTexture(m_pTexture->getTexture());
 }
 
 
 CSprite::~CSprite()
 {
-	delete m_pTexture;
-	m_pTexture = NULL;
-
 	delete m_pSprite;
 	m_pSprite = NULL;
 }
 
 
-void CSprite::load(std::string fileName)
-{
-	bool isLoaded = m_pTexture->loadFromFile(fileName);
-#ifdef DEBUG
-	assert(isLoaded);
-#endif
-	m_pTexture->setSmooth(true);
-	m_pTexture->setRepeated(false);
-
-	m_pSprite->setTexture(*m_pTexture);
-}
-
-
 void CSprite::update()
 {
-	m_pSprite->move(1.0f, 0.0f);
+	m_pSprite->move(1.0f, 1.0f);
 
-	if (currCol + 1 <= numCol)
+	if (currSub.x + 1 > m_pTexture->getSubNum().x)
 	{
-		++currCol;
+		currSub.x = 1;
 	}
 	else
 	{
-		currCol = 1;
+		++currSub.x;
 	}
 
 	// selects a sub-section of the texture
-	int topX = subW * (currCol - 1);
-	int topY = subH * (currRow - 1);
-	m_pSprite->setTextureRect(sf::IntRect(topX, topY, subW, subH));
+	int w = m_pTexture->getSubSize().x;
+	int h = m_pTexture->getSubSize().y;
+	int topX = w * (currSub.x - 1);
+	int topY = h * (currSub.y - 1);
+	m_pSprite->setTextureRect(sf::IntRect(topX, topY, w, h));
 }
 
 
