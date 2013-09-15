@@ -14,11 +14,12 @@ class CSprite
 {
 public:
 	CSprite(sf::RenderWindow* pWindow,	// rendering window
-	        std::string fileName,		// relative path to texture File (from project root)
 	        int subH, int subW,			// LENGTH sub-image height/width
 	        int numRow, int numCol,		// LENGTH number of sub images
 	        int currRow, int currCol);	// LENGTH current sub-image being rendered
 	~CSprite();
+
+	void load(std::string fileName); // loads the specific file into a texture
 
 	void update(); // updates this sprite's state
 	void render(); // renders the sprite to the target window
@@ -32,7 +33,6 @@ private:
 	int numRow, numCol; 	// LENGTH number of sub-section images on the texture
 	int currRow, currCol;	// LENGTH Current (row, col) that is being rendered
 
-	void load(std::string fileName);
 };
 
 #endif /* CSPRITE_H_ */

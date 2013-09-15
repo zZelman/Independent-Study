@@ -7,10 +7,10 @@ CGame::CGame()
 	initWindow();
 
 	m_pTestSprite = new CSprite(m_pGameWindow,
-	                            "res/ninja (46h 32w).png",
 	                            46, 32,
 	                            2, 6,
 	                            2, 1);
+	m_pTestSprite->load("res/ninja (46h 32w).png");
 
 	isRunning = false;
 	isPaused = false;

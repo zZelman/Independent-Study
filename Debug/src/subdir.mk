@@ -6,16 +6,19 @@
 CPP_SRCS += \
 ../src/CGame.cpp \
 ../src/CSprite.cpp \
+../src/CTexture.cpp \
 ../src/main.cpp 
 
 OBJS += \
 ./src/CGame.o \
 ./src/CSprite.o \
+./src/CTexture.o \
 ./src/main.o 
 
 CPP_DEPS += \
 ./src/CGame.d \
 ./src/CSprite.d \
+./src/CTexture.d \
 ./src/main.d 
 
 

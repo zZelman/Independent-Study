@@ -10,7 +10,6 @@
 #include <assert.h>
 
 CSprite::CSprite(sf::RenderWindow* pWindow,
-                 std::string fileName,
                  int subH, int subW,
                  int numRow, int numCol,
                  int currRow, int currCol)
@@ -36,9 +35,8 @@ CSprite::CSprite(sf::RenderWindow* pWindow,
 
 	m_pTexture = new sf::Texture();
 	m_pSprite = new sf::Sprite();
-
-	load(fileName);
 }
+
 
 CSprite::~CSprite()
 {
@@ -48,6 +46,20 @@ CSprite::~CSprite()
 	delete m_pSprite;
 	m_pSprite = NULL;
 }
+
+
+void CSprite::load(std::string fileName)
+{
+	bool isLoaded = m_pTexture->loadFromFile(fileName);
+#ifdef DEBUG
+	assert(isLoaded);
+#endif
+	m_pTexture->setSmooth(true);
+	m_pTexture->setRepeated(false);
+
+	m_pSprite->setTexture(*m_pTexture);
+}
+
 
 void CSprite::update()
 {
@@ -68,20 +80,8 @@ void CSprite::update()
 	m_pSprite->setTextureRect(sf::IntRect(topX, topY, subW, subH));
 }
 
+
 void CSprite::render()
 {
 	m_pWindow->draw(*m_pSprite);
-}
-
-void CSprite::load(std::string fileName)
-{
-	bool isLoaded = m_pTexture->loadFromFile(fileName);
-#ifdef DEBUG
-	assert(isLoaded);
-#endif
-	m_pTexture->setSmooth(true);
-	m_pTexture->setRepeated(false);
-
-
-	m_pSprite->setTexture(*m_pTexture);
 }
