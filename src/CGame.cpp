@@ -6,7 +6,11 @@ CGame::CGame()
 {
 	initWindow();
 
-	m_pTestSprite = new CSprite(m_pGameWindow);
+	m_pTestSprite = new CSprite(m_pGameWindow,
+	                            "res/ninja (46h 32w).png",
+	                            46, 32,
+	                            2, 6,
+	                            2, 1);
 
 	isRunning = false;
 	isPaused = false;
@@ -35,8 +39,9 @@ void CGame::stopGame()
 }
 
 
-void CGame::initWindow() {
-	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(800, 600), "Independent Study");
+void CGame::initWindow()
+{
+	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(500, 800), "Independent Study");
 
 	// NOTE: do not use Virtual Sync and fixed frame rate at once
 //	m_pGameWindow->setVerticalSyncEnabled(true);

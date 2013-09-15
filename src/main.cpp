@@ -18,23 +18,23 @@ void testing()
 	pWindow->setFramerateLimit(60);
 	while (pWindow->isOpen())
 	{
-        sf::Event event;
-        while (pWindow->pollEvent(event))
-        {
-            // "close requested" event: we close the window
-            if (event.type == sf::Event::Closed ||
-            	event.key.code == sf::Keyboard::Escape)
-            {
-            	pWindow->close();
-            	return;
-            }
-        }
+		sf::Event event;
+		while (pWindow->pollEvent(event))
+		{
+			// "close requested" event: we close the window
+			if (event.type == sf::Event::Closed ||
+			        event.key.code == sf::Keyboard::Escape)
+			{
+				pWindow->close();
+				return;
+			}
+		}
 
-        pWindow->clear(sf::Color::White);
+		pWindow->clear(sf::Color::White);
 
-        pWindow->draw(*pSprite);
+		pWindow->draw(*pSprite);
 
-        pWindow->display();
+		pWindow->display();
 	}
 }
 
