@@ -5,14 +5,17 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/CGame.cpp \
+../src/CSprite.cpp \
 ../src/main.cpp 
 
 OBJS += \
 ./src/CGame.o \
+./src/CSprite.o \
 ./src/main.o 
 
 CPP_DEPS += \
 ./src/CGame.d \
+./src/CSprite.d \
 ./src/main.d 
 
 
@@ -20,7 +23,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -I"/home/zZelman/1 Programing/C++/Independent-Study/SFML-2.1/include" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -DDEBUG -I"/home/zZelman/1 Programing/C++/Independent-Study/SFML-2.1/include" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

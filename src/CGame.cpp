@@ -1,13 +1,12 @@
 #include "CGame.h"
 #include "include_sfml.h"
+#include "CSprite.h"
 
 CGame::CGame()
 {
-	m_pGameWindow = new sf::RenderWindow(sf::VideoMode(800, 600), "Independent Study");
+	initWindow();
 
-	// NOTE: do not use Virtual Sync and fixed frame rate at once
-//	m_pGameWindow->setVerticalSyncEnabled(true);
-	m_pGameWindow->setFramerateLimit(60);
+	m_pTestSprite = new CSprite(m_pGameWindow);
 
 	isRunning = false;
 	isPaused = false;
@@ -18,6 +17,9 @@ CGame::~CGame()
 {
 	delete m_pGameWindow;
 	m_pGameWindow = NULL;
+
+	delete m_pTestSprite;
+	m_pTestSprite = NULL;
 }
 
 
@@ -30,6 +32,15 @@ void CGame::startGame()
 void CGame::stopGame()
 {
 	isRunning = false;
+}
+
+
+void CGame::initWindow() {
+	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(800, 600), "Independent Study");
+
+	// NOTE: do not use Virtual Sync and fixed frame rate at once
+//	m_pGameWindow->setVerticalSyncEnabled(true);
+	m_pGameWindow->setFramerateLimit(60);
 }
 
 
@@ -67,11 +78,7 @@ void CGame::gameLoop()
 			update(); // update all game states
 		}
 
-		m_pGameWindow->clear(); // defaults to black opaque
-
 		render(); // render all game things based on their states
-
-		m_pGameWindow->display(); // displays what has been rendered since last clear
 	}
 
 	// if the program flow gets here, its because isRunning was requested as being false
@@ -141,9 +148,18 @@ bool CGame::input_gameSystem(sf::Event* pEvent)
 
 void CGame::update()
 {
+	m_pTestSprite->update();
 }
 
 
 void CGame::render()
 {
+	m_pGameWindow->clear(sf::Color::White); // clear screen with a black background
+
+
+	// drawing here...
+	m_pTestSprite->render();
+
+
+	m_pGameWindow->display(); // displays what has been rendered since last clear
 }

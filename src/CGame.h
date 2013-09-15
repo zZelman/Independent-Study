@@ -9,6 +9,7 @@
 #define CGAME_H_
 
 #include "include_sfml.h"
+#include "CSprite.h"
 
 class CGame
 {
@@ -20,8 +21,12 @@ public:
 	void stopGame();
 private:
 	sf::RenderWindow* m_pGameWindow;
+	CSprite* m_pTestSprite;
+
 	bool isRunning;
 	bool isPaused;
+
+	void initWindow();
 
 	void gameLoop();
 

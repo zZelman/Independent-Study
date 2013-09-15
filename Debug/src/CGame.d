@@ -72,7 +72,8 @@ src/CGame.d: ../src/CGame.cpp ../src/CGame.h ../src/include_sfml.h \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/Sound.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBuffer.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
- /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp
+ /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
+ ../src/CSprite.h
 
 ../src/CGame.h:
 
@@ -225,3 +226,5 @@ src/CGame.d: ../src/CGame.cpp ../src/CGame.h ../src/include_sfml.h \
 /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp:
 
 /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp:
+
+../src/CSprite.h:
