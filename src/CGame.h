@@ -11,6 +11,7 @@
 #include "include_sfml.h"
 #include "CSprite.h"
 #include "CTexture.h"
+#include "CMap.h"
 
 class CGame
 {
@@ -22,8 +23,10 @@ public:
 	void stopGame();
 private:
 	sf::RenderWindow* m_pGameWindow;
-	CSprite* m_pTestSprite;
+	CSprite* m_pTestSprite1;
+	CSprite* m_pTestSprite2;
 	CTexture* m_pTestTexture;
+	CMap* m_pTestMap;
 
 	bool isRunning;
 	bool isPaused;

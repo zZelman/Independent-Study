@@ -1,4 +1,4 @@
-src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
+src/CMap.d: ../src/CMap.cpp ../src/CMap.h ../src/include_sfml.h \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Window.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/System.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Config.hpp \
@@ -73,9 +73,9 @@ src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBuffer.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
- ../src/CSprite.h ../src/CTexture.h ../src/CMap.h ../src/CTile.h
+ ../src/CTile.h ../src/CSprite.h ../src/CTexture.h
 
-../src/CGame.h:
+../src/CMap.h:
 
 ../src/include_sfml.h:
 
@@ -227,10 +227,8 @@ src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
 
 /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp:
 
+../src/CTile.h:
+
 ../src/CSprite.h:
 
 ../src/CTexture.h:
-
-../src/CMap.h:
-
-../src/CTile.h:

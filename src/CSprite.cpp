@@ -22,6 +22,13 @@ CSprite::CSprite(sf::RenderWindow* pWindow,
 
 	m_pSprite = new sf::Sprite();
 	m_pSprite->setTexture(m_pTexture->getTexture());
+
+	// selects a sub-section of the texture
+	int w = m_pTexture->getSubSize().x;
+	int h = m_pTexture->getSubSize().y;
+	int topX = w * (currSub.x - 1);
+	int topY = h * (currSub.y - 1);
+	m_pSprite->setTextureRect(sf::IntRect(topX, topY, w, h));
 }
 
 
@@ -32,25 +39,26 @@ CSprite::~CSprite()
 }
 
 
+sf::FloatRect CSprite::getRect()
+{
+	return m_pSprite->getGlobalBounds();
+}
+
+
+void CSprite::setPosition(float x, float y)
+{
+	m_pSprite->setPosition(x, y);
+}
+
+
+void CSprite::move(float x, float y)
+{
+	m_pSprite->move(x, y);
+}
+
+
 void CSprite::update()
 {
-	m_pSprite->move(1.0f, 1.0f);
-
-	if (currSub.x + 1 > m_pTexture->getSubNum().x)
-	{
-		currSub.x = 1;
-	}
-	else
-	{
-		++currSub.x;
-	}
-
-	// selects a sub-section of the texture
-	int w = m_pTexture->getSubSize().x;
-	int h = m_pTexture->getSubSize().y;
-	int topX = w * (currSub.x - 1);
-	int topY = h * (currSub.y - 1);
-	m_pSprite->setTextureRect(sf::IntRect(topX, topY, w, h));
 }
 
 

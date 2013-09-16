@@ -5,20 +5,26 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/CGame.cpp \
+../src/CMap.cpp \
 ../src/CSprite.cpp \
 ../src/CTexture.cpp \
+../src/CTile.cpp \
 ../src/main.cpp 
 
 OBJS += \
 ./src/CGame.o \
+./src/CMap.o \
 ./src/CSprite.o \
 ./src/CTexture.o \
+./src/CTile.o \
 ./src/main.o 
 
 CPP_DEPS += \
 ./src/CGame.d \
+./src/CMap.d \
 ./src/CSprite.d \
 ./src/CTexture.d \
+./src/CTile.d \
 ./src/main.d 
 
 

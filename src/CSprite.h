@@ -17,14 +17,28 @@ public:
 	CSprite(sf::RenderWindow* pWindow,	// rendering window
 	        CTexture* pTexture,			// texture that this sprite will be rendering with
 	        int currRow, int currCol);	// LENGTH current sub-image being rendered
-	~CSprite();
+	virtual ~CSprite();
 
-	void update(); // updates this sprite's state
-	void render(); // renders the sprite to the target window
+	// * returns the top left (x,y) coord, and the width & height
+	// * Screen space
+	sf::FloatRect getRect();
+
+	// sets the absolute position of the sprite in screen space
+	void setPosition(float x, float y);
+
+	// moves the sprite a relative distance from the current position
+	void move(float x, float y);
+
+	// updates this sprite's state
+	virtual void update();
+
+	// renders the sprite to the target window
+	void render();
+
 
 private:
 	sf::RenderWindow* m_pWindow;	// target rendering window
-	CTexture* m_pTexture;		// full texture of this sprite
+	CTexture* m_pTexture;			// full texture of this sprite
 	sf::Sprite* m_pSprite;			// sub-section of the texture being rendered
 
 	// * LENGTH Current sub section that is being rendered

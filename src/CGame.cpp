@@ -2,6 +2,7 @@
 #include "include_sfml.h"
 #include "CSprite.h"
 #include "CTexture.h"
+#include <iostream>
 
 CGame::CGame()
 {
@@ -11,9 +12,20 @@ CGame::CGame()
 	                              46, 32,
 	                              2, 6);
 
-	m_pTestSprite = new CSprite(m_pGameWindow,
-	                            m_pTestTexture,
-	                            2, 1);
+	m_pTestSprite1 = new CSprite(m_pGameWindow,
+	                             m_pTestTexture,
+	                             2, 1);
+
+	m_pTestSprite2 = new CSprite(m_pGameWindow,
+	                             m_pTestTexture,
+	                             2, 1);
+
+	m_pTestMap = new CMap(m_pGameWindow,
+	                      "res/tile sets/dirt-grass road tileset.png",
+	                      32, 32,
+	                      1, 8,
+	                      "fakePath");
+
 
 	isRunning = false;
 	isPaused = false;
@@ -28,8 +40,11 @@ CGame::~CGame()
 	delete m_pTestTexture;
 	m_pTestTexture = NULL;
 
-	delete m_pTestSprite;
-	m_pTestSprite = NULL;
+	delete m_pTestSprite1;
+	m_pTestSprite1 = NULL;
+
+	delete m_pTestSprite2;
+	m_pTestSprite2 = NULL;
 }
 
 
@@ -150,6 +165,8 @@ bool CGame::input_gameSystem(sf::Event* pEvent)
 	if (pEvent->type == sf::Event::Resized)
 	{
 		// TODO: assign new values for window resized
+//		m_pGameWindow->setSize(sf::Vector2<uint>(pEvent->size.width, pEvent->size.height));
+//		std::cout << m_pGameWindow->getSize().x << ", " << m_pGameWindow->getSize().y << std::endl;
 		return true;
 	}
 
@@ -159,7 +176,13 @@ bool CGame::input_gameSystem(sf::Event* pEvent)
 
 void CGame::update()
 {
-	m_pTestSprite->update();
+	m_pTestSprite1->move(1.0, 0.0);
+	m_pTestSprite1->update();
+
+	m_pTestSprite2->move(0.0, 1.0);
+	m_pTestSprite2->update();
+
+	m_pTestMap->update();
 }
 
 
@@ -169,7 +192,10 @@ void CGame::render()
 
 
 	// drawing here...
-	m_pTestSprite->render();
+	m_pTestSprite1->render();
+	m_pTestSprite2->render();
+
+	m_pTestMap->render();
 
 
 	m_pGameWindow->display(); // displays what has been rendered since last clear
