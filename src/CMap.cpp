@@ -199,7 +199,6 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(data) != string::npos && !found_data)
 		{
 
-			std::vector<std::vector<int> > mapData;
 			for (int i = 0; i < m_MapRows; ++i)
 			{
 				getline(fileStream, line);
@@ -222,30 +221,9 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 				//		(it is uninitialized data which could be a problem)
 				lineVector.resize(m_MapColumns);
 
-				mapData.push_back(lineVector);
-			}
-
-			for (uint i = 0; i < mapData.size(); ++i)
-			{
-				vector<int> lineVector = mapData[i];
-				for (uint n = 0; n < lineVector.size(); ++n)
-				{
-					if (lineVector[n] == 0)
-					{
-						continue;
-					}
-
-//					STileData<int>* pTile = new STileData<int>();
-//					pTile->width = m_tileWidth;
-//					pTile->height = m_tileHeight;
-//					pTile->spriteCoords.setCoords(lineVector[n], 1);
-//					pTile->mapCoords.setCoords(n, i);
-//					pTile->screenCoords_topLeft.setCoords(n * m_tileHeight, i * m_tileWidth);
-//					pTile->screenCoords_bottomRight.setCoords(
-//						n * m_tileHeight + m_tileHeight,
-//						i * m_tileWidth + m_tileWidth);
-//					m_pMapTiles.push_back(pTile);
-				}
+				// push the line vector (map line) onto the given mapData vector
+				//	(given in function arguments)
+				mapData->push_back(lineVector);
 			}
 		}
 
@@ -253,30 +231,52 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 
 	fileStream.close();
 
-	cout << "mapCols: " << m_MapColumns << endl;
-	cout << "mapRows: " << m_MapRows << endl;
-
-	cout << "tileSet: " << m_tileSetPath << endl;
-	cout << "tile W : " << m_tileWidth << endl;
-	cout << "tile H : " << m_tileHeight << endl;
-	cout << "subRow : " << m_subRow << endl;
-	cout << "subCol : " << m_subCol << endl;
+	// debug code
+//	cout << "mapCols: " << m_MapColumns << endl;
+//	cout << "mapRows: " << m_MapRows << endl;
+//
+//	cout << "tileSet: " << m_tileSetPath << endl;
+//	cout << "tile W : " << m_tileWidth << endl;
+//	cout << "tile H : " << m_tileHeight << endl;
+//	cout << "subRow : " << m_subRow << endl;
+//	cout << "subCol : " << m_subCol << endl;
 }
 
 
 void CMap::loadMap(std::vector<std::vector<int> >* mapData)
 {
+	// * all data has been extracted from the map file at this point
+	// * the actual map representation data is stored within mapData 2D vector
 
-}
 
+	// this is the texture that all of the tiles will use
+	m_pTexture = new CTexture(m_tileSetPath,
+			m_tileHeight, m_tileWidth,
+			m_subRow, m_subCol);
 
-void CMap::loadTexture(std::string texturePath,
-                       int subH, int subW,
-                       int numRow,	int numCol)
-{
-	m_pTexture = new CTexture(texturePath,
-	                          subH, subW,
-	                          numRow, numCol);
+	// create and add all of the tiles to the m_tiles 2D vector
+	using namespace std;
+	for (uint i = 0; i < mapData->size(); ++i)
+	{
+		vector<int> lineVector = mapData->at(i);
+		for (uint n = 0; n < lineVector.size(); ++n)
+		{
+			// optimization... 0's represent NO tile present
+			if (lineVector[n] == 0)
+			{
+				continue;
+			}
+
+			// * the constant 1 here means that the Tiles ATM come from a strip-like sprite sheet
+			//		(a row of 1 and n columns)
+			// * change this if you want to have a nxm sprite sheet to represent the tiles
+			CTile* pTile = new CTile(m_pWindow, m_pTexture, 1, lineVector[n]);
+			float x = n * m_tileWidth;
+			float y = i * m_tileHeight;
+			pTile->setPosition(x, y);
+			m_tiles.push_back(pTile);
+		}
+	}
 }
 
 

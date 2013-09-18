@@ -57,11 +57,6 @@ private:
 	//		where the individual indices corespond to a sub-image on the texture
 	void loadMap(std::vector<std::vector<int> >* mapData);
 
-	// loads a whole texture into memory
-	void loadTexture(std::string texturePath,
-	                 int subH, int subW,
-	                 int numRow, int numCol);
-
 	int stringToInt(std::string str);
 };
 
