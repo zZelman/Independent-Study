@@ -2,6 +2,7 @@
 #include "include_sfml.h"
 #include "CSprite.h"
 #include "CTexture.h"
+#include "CMap.h"
 #include <iostream>
 
 CGame::CGame()
@@ -21,10 +22,13 @@ CGame::CGame()
 	                             2, 1);
 
 	m_pTestMap = new CMap(m_pGameWindow,
-	                      "res/tile sets/dirt-grass road tileset.png",
-	                      32, 32,
-	                      1, 8,
-	                      "fakePath");
+	                      "res/tile sets/testing.txt");
+	sf::Thread mapThread(&CMap::load, m_pTestMap);
+	mapThread.launch(); // delegate map loading to another core
+
+	// ... [load other things] ...
+
+	mapThread.wait(); // cannot begin the game until the map is loaded
 
 
 	isRunning = false;
@@ -124,6 +128,8 @@ bool CGame::input_user(sf::Event* pEvent)
 		case sf::Keyboard::Escape:
 			m_pGameWindow->close();
 			return true;
+			break;
+		default:
 			break;
 		}
 	}

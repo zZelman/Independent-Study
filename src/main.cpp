@@ -1,8 +1,9 @@
 #include "CGame.h"
 
 #include "include_sfml.h"
+#include <iostream>
 
-void testing()
+void testingBasics()
 {
 	// loading a texture from a file
 	sf::Texture* pTexture = new sf::Texture();
@@ -38,10 +39,49 @@ void testing()
 	}
 }
 
+class Test
+{
+public:
+	Test() {}
+	void run()
+	{
+		for (int i = 0; i < 100; ++i)
+		{
+			std::cout << ">> Object" << std::endl;
+			sf::sleep(sf::milliseconds(15));
+		}
+	}
+};
+
+void func()
+{
+	for (int i = 0; i < 100; ++i)
+	{
+		std::cout << "-- Function" << std::endl;
+		sf::sleep(sf::milliseconds(20));
+	}
+}
+void testingThreads()
+{
+	sf::Thread functionThread(&func); // arguments are possible, but only 1
+	functionThread.launch();
+
+	Test* testObj = new Test();
+	sf::Thread objThread(&Test::run, testObj); // note the obj* and NO arguments
+	objThread.launch();
+
+	for (int i = 0; i < 100; ++i)
+	{
+		std::cout << "Main" << std::endl;
+		sf::sleep(sf::milliseconds(10));
+	}
+}
+
 
 int main()
 {
-//	testing();
+//	testingBasics();
+//	testingThreads();
 
 
 	CGame* pGame = new CGame();
