@@ -16,6 +16,9 @@ tile_height=32
 tile_subRow=1
 tile_subCol=8
 
+tile-set=res/tile sets/glyph tileset.png
+tile-subCol=9
+
 [Map Data]
 data=
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

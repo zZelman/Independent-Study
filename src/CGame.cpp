@@ -66,7 +66,7 @@ void CGame::stopGame()
 
 void CGame::initWindow()
 {
-	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(500, 800), "Independent Study");
+	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(500, 500), "Independent Study");
 
 	// NOTE: do not use Virtual Sync and fixed frame rate at once
 //	m_pGameWindow->setVerticalSyncEnabled(true);
@@ -198,10 +198,10 @@ void CGame::render()
 
 
 	// drawing here...
+	m_pTestMap->render();
+
 	m_pTestSprite1->render();
 	m_pTestSprite2->render();
-
-	m_pTestMap->render();
 
 
 	m_pGameWindow->display(); // displays what has been rendered since last clear
