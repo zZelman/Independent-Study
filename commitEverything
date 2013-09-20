@@ -1,6 +1,6 @@
 #!/bin/bash
 
 git add -A *
-git add -A .*
+find . -name '.[a-z]*' -exec git add '{}' ';'
 git commit -a -m "$*"
 git push
