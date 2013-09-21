@@ -19,16 +19,14 @@ public:
 	~CMap();
 
 	const std::vector<CTile*>* getTiles();
-	int getMapColumns() const;
-	int getMapRows() const;
-	int getTileHeight() const;
-	int getTileWidth() const;
+	sf::Vector2<int> getMapNum() const;
+	sf::Vector2<int> getTileSubNum() const;
+	sf::Vector2<int> getTileSize() const;
 
 	void load();
 
 	void update();
 	void render();
-
 
 private:
 	sf::RenderWindow* m_pWindow;	// where this map will be rendered
@@ -36,14 +34,11 @@ private:
 	CTexture* m_pTexture;			// the texture that all of the spites will use
 
 	std::string m_mapPath;	// relative path to the map data file
-	int m_MapColumns;		// LENGTH number of tiles per row
-	int m_MapRows;			// LENGTH number of tiles per column
+	sf::Vector2<int> m_mapNum; // LENGTH number of tiles per (x = col; y = row)
 
-	std::string m_tileSetPath;	// relative path to the texture that all sub-images come from
-	int m_tileWidth;			// width of tiles
-	int m_tileHeight;			// height of tiles
-	int m_subRow;				// number of sub rows within the tileset
-	int m_subCol;				// number of sub columns within the tileset
+	std::string m_tileSetPath;		// relative path to the texture that all sub-images come from
+	sf::Vector2<int> m_tileSize; 	// x = width; y = height
+	sf::Vector2<int> m_tileSubNum;	// x = cols, y = rows;
 
 	// * reads all of the data from the file into the member variables
 	// * does not create anything with 'new'

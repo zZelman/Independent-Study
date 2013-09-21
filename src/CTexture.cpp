@@ -10,15 +10,12 @@
 #include <assert.h>
 
 CTexture::CTexture(std::string fileName,
-                   int subH, int subW,
-                   int numRow,	int numCol)
+        sf::Vector2<int> subSize,
+        sf::Vector2<int> subNum)
 {
+	m_subSize = subSize;
 
-	subSize.y = subH;
-	subSize.x = subW;
-
-	subNum.y = numRow;
-	subNum.x = numCol;
+	m_subNum = subNum;
 
 	load(fileName);
 }
@@ -52,13 +49,13 @@ void CTexture::setTexture(const sf::Texture& texture)
 
 sf::Vector2<int> CTexture::getSubNum() const
 {
-	return subNum;
+	return m_subNum;
 }
 
 
 sf::Vector2<int> CTexture::getSubSize() const
 {
-	return subSize;
+	return m_subSize;
 }
 
 

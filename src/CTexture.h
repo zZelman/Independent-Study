@@ -14,8 +14,8 @@ class CTexture
 {
 public:
 	CTexture(std::string fileName,		// Relative path to the texture image
-	         int subH, int subW,		// LENGTH sub-image height/width
-	         int numRow, int numCol);	// LENGTH number of sub images
+	         sf::Vector2<int> subSize,	// LENGTH sub-image height/width
+	         sf::Vector2<int> subNum);	// LENGTH number of sub images
 	~CTexture();
 
 	// whole image represented with a texture
@@ -41,11 +41,11 @@ private:
 
 	// * LENGTH height/width of the sub-section images on the texture
 	// * x = width; y = height
-	sf::Vector2<int> subSize;
+	sf::Vector2<int> m_subSize;
 
 	// * LENGTH number of sub-section images on the texture
 	// * x = cols; y = rows
-	sf::Vector2<int> subNum;
+	sf::Vector2<int> m_subNum;
 
 };
 

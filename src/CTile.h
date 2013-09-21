@@ -9,17 +9,23 @@
 #define CTILE_H_
 
 #include "CSprite.h"
+#include "include_sfml.h"
 
-class CTile: public CSprite
+class CTile
 {
 public:
 	CTile(sf::RenderWindow* pWindow,	// rendering window
 	      CTexture* pTexture,			// texture that this sprite will be rendering with
-	      int currRow, int currCol);	// LENGTH current sub-image being rendered
+	      sf::Vector2<int> currSub);	// LENGTH current sub-image being rendered
 	~CTile();
 
-	void update();
+	void setPosition(float x, float y);
+
 	void render();
+
+
+private:
+	CSprite* m_pSprite; // has-a sprite
 };
 
 #endif /* CTILE_H_ */

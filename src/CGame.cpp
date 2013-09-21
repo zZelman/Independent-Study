@@ -15,10 +15,12 @@ CGame::CGame()
 //	sf::Thread mapThread(&CMap::load, m_pTestMap);
 //	mapThread.launch();
 
+	sf::Vector2<int> subSize(32, 46);
+	sf::Vector2<int> subNum(6, 2);
 	m_pTestUnit = new CUnit(m_pGameWindow,
 	                        "res/ninja (46h 32w).png",
-	                        46, 32,
-	                        2, 6);
+	                        subSize,
+	                        subNum);
 	m_pTestUnit->load();
 	m_pTestUnit->setPosition(0, 0);
 //	sf::Thread unitThread(&CUnit::load, m_pTestUnit);

@@ -18,8 +18,8 @@ class CUnit
 public:
 	CUnit(sf::RenderWindow* pWindow,
 	      std::string texturePath,	// Relative path to the texture file on disk
-	      int subH, int subW,		// LENGTH sub-image height/width
-	      int numRow, int numCol);	// LENGTH number of sub images
+	      sf::Vector2<int> subSize,	// LENGTH sub-image height/width
+	      sf::Vector2<int> subNum);	// LENGTH number of sub images
 	~CUnit();
 
 	// method that loads based on instance variables

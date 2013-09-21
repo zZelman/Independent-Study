@@ -23,14 +23,14 @@ CMap::CMap(sf::RenderWindow* pWindow,
 	// just to be sure, set everything else to 0
 	m_pTexture = NULL;
 
-	m_MapColumns = 0;
-	m_MapRows = 0;
+	m_mapNum.x = 0;
+	m_mapNum.y = 0;
 
 	m_tileSetPath = "";
-	m_tileWidth = 0;
-	m_tileHeight = 0;
-	m_subRow = 0;
-	m_subCol = 0;
+	m_tileSize.x = 0;
+	m_tileSize.y = 0;
+	m_tileSubNum.x = 0;
+	m_tileSubNum.y = 0;
 }
 
 
@@ -56,27 +56,18 @@ const std::vector<CTile*>* CMap::getTiles()
 }
 
 
-int CMap::getMapColumns() const
-{
-	return m_MapColumns;
+sf::Vector2<int> CMap::getMapNum() const {
+	return m_mapNum;
 }
 
 
-int CMap::getMapRows() const
-{
-	return m_MapRows;
+sf::Vector2<int> CMap::getTileSubNum() const {
+	return m_tileSubNum;
 }
 
 
-int CMap::getTileHeight() const
-{
-	return m_tileHeight;
-}
-
-
-int CMap::getTileWidth() const
-{
-	return m_tileWidth;
+sf::Vector2<int> CMap::getTileSize() const {
+	return m_tileSize;
 }
 
 
@@ -143,7 +134,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(map_cols) != string::npos && !found_map_cols)
 		{
 			string numStr = line.substr(map_cols.length(), line.length());
-			m_MapColumns = stringToInt(numStr);
+			m_mapNum.x = stringToInt(numStr);
 
 			found_map_cols = true;
 		}
@@ -151,7 +142,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(map_rows) != string::npos && !found_map_rows)
 		{
 			string numStr = line.substr(map_rows.length(), line.length());
-			m_MapRows = stringToInt(numStr);
+			m_mapNum.y = stringToInt(numStr);
 
 			found_map_rows = true;
 		}
@@ -159,7 +150,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(tile_width) != string::npos && !found_tile_width)
 		{
 			string numStr = line.substr(tile_width.length(), line.length());
-			m_tileWidth = stringToInt(numStr);
+			m_tileSize.x = stringToInt(numStr);
 
 			found_tile_width = true;
 		}
@@ -167,7 +158,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(tile_height) != string::npos && !found_tile_height)
 		{
 			string numStr = line.substr(tile_height.length(), line.length());
-			m_tileHeight = stringToInt(numStr);
+			m_tileSize.y = stringToInt(numStr);
 
 			found_tile_height = true;
 		}
@@ -183,7 +174,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(tile_subRow) != string::npos && !found_tile_subRow)
 		{
 			string numStr = line.substr(tile_subRow.length(), line.length());
-			m_subRow = stringToInt(numStr);
+			m_tileSubNum.y = stringToInt(numStr);
 
 			found_tile_subRow = true;
 		}
@@ -191,7 +182,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(tile_subCol) != string::npos && !found_tile_subCol)
 		{
 			string numStr = line.substr(tile_subCol.length(), line.length());
-			m_subCol = stringToInt(numStr);
+			m_tileSubNum.x = stringToInt(numStr);
 
 			found_tile_subCol = true;
 		}
@@ -199,7 +190,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 		if (line.find(data) != string::npos && !found_data)
 		{
 
-			for (int i = 0; i < m_MapRows; ++i)
+			for (int i = 0; i < m_mapNum.y; ++i)
 			{
 				getline(fileStream, line);
 
@@ -219,7 +210,7 @@ void CMap::readData(std::vector<std::vector<int> >* mapData)
 				}
 				// get rid of any spot that was grown by the vector that we don't want
 				//		(it is uninitialized data which could be a problem)
-				lineVector.resize(m_MapColumns);
+				lineVector.resize(m_mapNum.x);
 
 				// push the line vector (map line) onto the given mapData vector
 				//	(given in function arguments)
@@ -251,8 +242,8 @@ void CMap::loadMap(std::vector<std::vector<int> >* mapData)
 
 	// this is the texture that all of the tiles will use
 	m_pTexture = new CTexture(m_tileSetPath,
-	                          m_tileHeight, m_tileWidth,
-	                          m_subRow, m_subCol);
+	                          m_tileSize,
+	                          m_tileSubNum);
 
 	// create and add all of the tiles to the m_tiles 2D vector
 	using namespace std;
@@ -270,9 +261,10 @@ void CMap::loadMap(std::vector<std::vector<int> >* mapData)
 			// * the constant 1 here means that the Tiles ATM come from a strip-like sprite sheet
 			//		(a row of 1 and n columns)
 			// * change this if you want to have a nxm sprite sheet to represent the tiles
-			CTile* pTile = new CTile(m_pWindow, m_pTexture, 1, lineVector[n]);
-			float x = n * m_tileWidth;
-			float y = i * m_tileHeight;
+			sf::Vector2<int> currSub(lineVector[n], 1);
+			CTile* pTile = new CTile(m_pWindow, m_pTexture, currSub);
+			float x = n * m_tileSize.x;
+			float y = i * m_tileSize.y;
 			pTile->setPosition(x, y);
 			m_tiles.push_back(pTile);
 		}

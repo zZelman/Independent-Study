@@ -16,7 +16,7 @@ class CSprite
 public:
 	CSprite(sf::RenderWindow* pWindow,	// rendering window
 	        CTexture* pTexture,			// texture that this sprite will be rendering with
-	        int currRow, int currCol);	// LENGTH current sub-image being rendered
+	        sf::Vector2<int> currSub);	// LENGTH current sub-image being rendered
 	virtual ~CSprite();
 
 	// * returns the top left (x,y) coord, and the width & height
@@ -25,7 +25,7 @@ public:
 
 	// sets the current sub image being rendered from the texture
 	void setSubImage(int row, int col);
-	void setSubImage(const sf::Vector2<int>* currSub);
+	void setSubImage(const sf::Vector2<int>* newSub);
 
 	// sets the absolute position of the sprite in screen space
 	void setPosition(float x, float y);
@@ -44,7 +44,7 @@ private:
 
 	// * LENGTH Current sub section that is being rendered
 	// * y = row; x = col
-	sf::Vector2<int> currSub;
+	sf::Vector2<int> m_currSub;
 
 	// selects a sub-section of the texture
 	void chooseSubImage();

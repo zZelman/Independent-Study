@@ -6,20 +6,19 @@
  */
 
 #include "CUnit.h"
+#include "include_sfml.h"
 
 CUnit::CUnit(sf::RenderWindow* pWindow,
              std::string texturePath,
-             int subH, int subW,
-             int numRow, int numCol)
+             sf::Vector2<int> subSize,
+             sf::Vector2<int> subNum)
 {
 	m_pWindow = pWindow;
 	m_texturePath = texturePath;
 
-	m_subSize.x = subW;
-	m_subSize.y = subH;
+	m_subSize = subSize;
 
-	m_subNum.x = numCol;
-	m_subNum.y = numRow;
+	m_subNum = subNum;
 
 	m_currSub.x = 1;
 	m_currSub.y = 2;
@@ -57,12 +56,12 @@ CUnit::~CUnit()
 void CUnit::load()
 {
 	m_pTexture = new CTexture(m_texturePath,
-	                          m_subSize.y, m_subSize.x,
-	                          m_subNum.y, m_subNum.x);
+	                          m_subSize,
+	                          m_subNum);
 
 	m_pSprite = new CSprite(m_pWindow,
 	                        m_pTexture,
-	                        m_currSub.y, m_currSub.x);
+	                        m_currSub);
 
 	m_pAnimationClock = new sf::Clock();
 }

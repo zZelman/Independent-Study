@@ -8,25 +8,24 @@
 #include "CTile.h"
 #include "CSprite.h"
 
-CTile::CTile(sf::RenderWindow* pWindow, CTexture* pTexture, int currRow,
-             int currCol)
-	: CSprite(pWindow, pTexture, currRow, currCol)
-{
+CTile::CTile(sf::RenderWindow* pWindow,
+		CTexture* pTexture,
+		sf::Vector2<int> currSub) {
+	m_pSprite = new CSprite(pWindow, pTexture, currSub);
 }
 
-CTile::~CTile()
-{
-	// NOTE: C++ takes care of calling base-derived destructor,
-	//		in reverse order of construction
+
+CTile::~CTile() {
+	delete m_pSprite;
+	m_pSprite = NULL;
 }
 
-void CTile::update()
-{
-	// TODO: animated map tiles?
-	// NOTE: Tile is derived from Sprite because I want Tile to update differently
+
+void CTile::setPosition(float x, float y) {
+	m_pSprite->setPosition(x, y);
 }
 
-void CTile::render()
-{
-	CSprite::render();
+
+void CTile::render() {
+	m_pSprite->render();
 }
