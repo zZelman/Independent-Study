@@ -12,6 +12,7 @@
 #include "CSprite.h"
 #include "CTexture.h"
 #include "CMap.h"
+#include "CUnit.h"
 
 class CGame
 {
@@ -23,9 +24,7 @@ public:
 	void stopGame();
 private:
 	sf::RenderWindow* m_pGameWindow;
-	CSprite* m_pTestSprite1;
-	CSprite* m_pTestSprite2;
-	CTexture* m_pTestTexture;
+	CUnit* m_pTestUnit;
 	CMap* m_pTestMap;
 
 	bool isRunning;

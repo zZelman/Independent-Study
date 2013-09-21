@@ -23,14 +23,15 @@ public:
 	// * Screen space
 	sf::FloatRect getRect();
 
+	// sets the current sub image being rendered from the texture
+	void setSubImage(int row, int col);
+	void setSubImage(const sf::Vector2<int>* currSub);
+
 	// sets the absolute position of the sprite in screen space
 	void setPosition(float x, float y);
 
 	// moves the sprite a relative distance from the current position
 	void move(float x, float y);
-
-	// updates this sprite's state
-	virtual void update();
 
 	// renders the sprite to the target window
 	void render();
@@ -44,6 +45,9 @@ private:
 	// * LENGTH Current sub section that is being rendered
 	// * y = row; x = col
 	sf::Vector2<int> currSub;
+
+	// selects a sub-section of the texture
+	void chooseSubImage();
 
 };
 

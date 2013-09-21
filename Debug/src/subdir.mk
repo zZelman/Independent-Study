@@ -9,6 +9,7 @@ CPP_SRCS += \
 ../src/CSprite.cpp \
 ../src/CTexture.cpp \
 ../src/CTile.cpp \
+../src/CUnit.cpp \
 ../src/main.cpp 
 
 OBJS += \
@@ -17,6 +18,7 @@ OBJS += \
 ./src/CSprite.o \
 ./src/CTexture.o \
 ./src/CTile.o \
+./src/CUnit.o \
 ./src/main.o 
 
 CPP_DEPS += \
@@ -25,6 +27,7 @@ CPP_DEPS += \
 ./src/CSprite.d \
 ./src/CTexture.d \
 ./src/CTile.d \
+./src/CUnit.d \
 ./src/main.d 
 
 

@@ -9,27 +9,26 @@ CGame::CGame()
 {
 	initWindow();
 
-	m_pTestTexture = new CTexture("res/ninja (46h 32w).png",
-	                              46, 32,
-	                              2, 6);
-
-	m_pTestSprite1 = new CSprite(m_pGameWindow,
-	                             m_pTestTexture,
-	                             2, 1);
-
-	m_pTestSprite2 = new CSprite(m_pGameWindow,
-	                             m_pTestTexture,
-	                             2, 1);
-
 	m_pTestMap = new CMap(m_pGameWindow,
 	                      "res/tile sets/testing.txt");
-	sf::Thread mapThread(&CMap::load, m_pTestMap);
-	mapThread.launch(); // delegate map loading to another core
+	m_pTestMap->load();
+//	sf::Thread mapThread(&CMap::load, m_pTestMap);
+//	mapThread.launch();
+
+	m_pTestUnit = new CUnit(m_pGameWindow,
+	                        "res/ninja (46h 32w).png",
+	                        46, 32,
+	                        2, 6);
+	m_pTestUnit->load();
+	m_pTestUnit->setPosition(0, 0);
+//	sf::Thread unitThread(&CUnit::load, m_pTestUnit);
+//	unitThread.launch();
 
 	// ... [load other things] ...
 
-	mapThread.wait(); // cannot begin the game until the map is loaded
-
+	// cannot begin the game until everything is loaded
+//	mapThread.wait();
+//	unitThread.wait();
 
 	isRunning = false;
 	isPaused = false;
@@ -41,14 +40,11 @@ CGame::~CGame()
 	delete m_pGameWindow;
 	m_pGameWindow = NULL;
 
-	delete m_pTestTexture;
-	m_pTestTexture = NULL;
+	delete m_pTestMap;
+	m_pTestMap = NULL;
 
-	delete m_pTestSprite1;
-	m_pTestSprite1 = NULL;
-
-	delete m_pTestSprite2;
-	m_pTestSprite2 = NULL;
+	delete m_pTestUnit;
+	m_pTestUnit = NULL;
 }
 
 
@@ -182,13 +178,8 @@ bool CGame::input_gameSystem(sf::Event* pEvent)
 
 void CGame::update()
 {
-	m_pTestSprite1->move(1.0, 0.0);
-	m_pTestSprite1->update();
-
-	m_pTestSprite2->move(0.0, 1.0);
-	m_pTestSprite2->update();
-
 	m_pTestMap->update();
+	m_pTestUnit->update();
 }
 
 
@@ -199,10 +190,7 @@ void CGame::render()
 
 	// drawing here...
 	m_pTestMap->render();
-
-	m_pTestSprite1->render();
-	m_pTestSprite2->render();
-
+	m_pTestUnit->render();
 
 	m_pGameWindow->display(); // displays what has been rendered since last clear
 }

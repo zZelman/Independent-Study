@@ -15,20 +15,14 @@ CSprite::CSprite(sf::RenderWindow* pWindow,
                  int currRow, int currCol)
 {
 	m_pWindow	= pWindow;
-	currSub.y	= currRow;
-	currSub.x	= currCol;
 
 	m_pTexture = pTexture;
 
 	m_pSprite = new sf::Sprite();
 	m_pSprite->setTexture(m_pTexture->getTexture());
 
-	// selects a sub-section of the texture
-	int w = m_pTexture->getSubSize().x;
-	int h = m_pTexture->getSubSize().y;
-	int topX = w * (currSub.x - 1);
-	int topY = h * (currSub.y - 1);
-	m_pSprite->setTextureRect(sf::IntRect(topX, topY, w, h));
+	setSubImage(currRow, currCol);
+	chooseSubImage();
 }
 
 
@@ -44,6 +38,34 @@ sf::FloatRect CSprite::getRect()
 	return m_pSprite->getGlobalBounds();
 }
 
+void CSprite::setSubImage(int row, int col)
+{
+#ifdef DEBUG
+	assert(col <= m_pTexture->getSubNum().x && col > 0);
+	assert(row <= m_pTexture->getSubNum().y && row > 0);
+#endif
+	currSub.x = col;
+	currSub.y = row;
+
+	chooseSubImage();
+}
+
+
+void CSprite::setSubImage(const sf::Vector2<int>* currSub)
+{
+	int col = currSub->x;
+	int row = currSub->y;
+
+#ifdef DEBUG
+	assert(col <= m_pTexture->getSubNum().x && col > 0);
+	assert(row <= m_pTexture->getSubNum().y && row > 0);
+#endif
+	this->currSub.x = col;
+	this->currSub.y = row;
+
+	chooseSubImage();
+}
+
 
 void CSprite::setPosition(float x, float y)
 {
@@ -57,12 +79,17 @@ void CSprite::move(float x, float y)
 }
 
 
-void CSprite::update()
-{
-}
-
-
 void CSprite::render()
 {
 	m_pWindow->draw(*m_pSprite);
+}
+
+void CSprite::chooseSubImage()
+{
+	// selects a sub-section of the texture
+	int w = m_pTexture->getSubSize().x;
+	int h = m_pTexture->getSubSize().y;
+	int topX = w * (currSub.x - 1);
+	int topY = h * (currSub.y - 1);
+	m_pSprite->setTextureRect(sf::IntRect(topX, topY, w, h));
 }

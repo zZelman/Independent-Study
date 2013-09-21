@@ -251,8 +251,8 @@ void CMap::loadMap(std::vector<std::vector<int> >* mapData)
 
 	// this is the texture that all of the tiles will use
 	m_pTexture = new CTexture(m_tileSetPath,
-			m_tileHeight, m_tileWidth,
-			m_subRow, m_subCol);
+	                          m_tileHeight, m_tileWidth,
+	                          m_subRow, m_subCol);
 
 	// create and add all of the tiles to the m_tiles 2D vector
 	using namespace std;

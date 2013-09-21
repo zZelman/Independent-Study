@@ -14,7 +14,7 @@ class CTexture
 {
 public:
 	CTexture(std::string fileName,		// Relative path to the texture image
-	         int subH, int subW,			// LENGTH sub-image height/width
+	         int subH, int subW,		// LENGTH sub-image height/width
 	         int numRow, int numCol);	// LENGTH number of sub images
 	~CTexture();
 
