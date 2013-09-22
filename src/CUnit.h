@@ -11,6 +11,7 @@
 #include "include_sfml.h"
 #include "CTexture.h"
 #include "CSprite.h"
+#include "CPhysics.h"
 #include <inttypes.h>
 
 class CUnit
@@ -21,6 +22,9 @@ public:
 	      sf::Vector2<int> subSize,	// LENGTH sub-image height/width
 	      sf::Vector2<int> subNum);	// LENGTH number of sub images
 	~CUnit();
+
+	// returns the width/height of this sprite
+	sf::Vector2<int> getSize();
 
 	// method that loads based on instance variables
 	void load();
@@ -37,6 +41,22 @@ public:
 
 	// sets the absolute position of the unit in SCREEN SPACE
 	void setPosition(float x, float y);
+
+	// OVERRIGHTS the scale
+	void setScale(float x, float y);
+	void setScale(const sf::Vector2<float>* scale);
+
+	// NO OVERRIGHTE scales the sprite by the given
+	void scale(float x, float y);
+	void scale(const sf::Vector2<float>* scale);
+
+	// checks point intersection within this Unit
+	bool contains(const sf::Vector2<float>* point) const;
+
+	// * checks rectangle intersection with this and the given
+	// * SCREEN SPACE
+	// * takes into consideration rotation/transformations
+	bool intersects(const sf::Rect<float>* rectangle) const;
 
 private:
 	sf::RenderWindow* m_pWindow; 	// where this unit will be rendered
@@ -60,17 +80,18 @@ private:
 	sf::Clock* m_pAnimationClock;
 	int64_t m_animTimerMS; // time between image switches
 
+	// physics attributes of this unit
+	CPhysics* m_sPhysics;
+
 	// allows certain things to happen only on the first update
 	bool isFirstUpdate;
-
-	// static movement size of each step that this unit takes
-	int m_moveStepSize;
 
 	// vars that control how the unit moves
 	bool isMove_right;
 	bool isMove_left;
 	bool isMove_up;
 	bool isMove_down;
+	bool isStoped;
 };
 
 #endif /* CUNIT_H_ */

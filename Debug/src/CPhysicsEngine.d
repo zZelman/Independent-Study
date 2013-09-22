@@ -1,4 +1,5 @@
-src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
+src/CPhysicsEngine.d: ../src/CPhysicsEngine.cpp ../src/CPhysicsEngine.h \
+ ../src/CTile.h ../src/CSprite.h ../src/include_sfml.h \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Window.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/System.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Config.hpp \
@@ -73,10 +74,13 @@ src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBuffer.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
  /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
- ../src/CSprite.h ../src/CTexture.h ../src/CMap.h ../src/CTile.h \
- ../src/CUnit.h ../src/CPhysics.h ../src/CPhysicsEngine.h
+ ../src/CTexture.h ../src/CMap.h ../src/CUnit.h ../src/CPhysics.h
 
-../src/CGame.h:
+../src/CPhysicsEngine.h:
+
+../src/CTile.h:
+
+../src/CSprite.h:
 
 ../src/include_sfml.h:
 
@@ -228,16 +232,10 @@ src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
 
 /home/zZelman/1\ Programing/C++/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp:
 
-../src/CSprite.h:
-
 ../src/CTexture.h:
 
 ../src/CMap.h:
 
-../src/CTile.h:
-
 ../src/CUnit.h:
 
 ../src/CPhysics.h:
-
-../src/CPhysicsEngine.h:

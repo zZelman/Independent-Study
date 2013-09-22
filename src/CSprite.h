@@ -30,6 +30,14 @@ public:
 	// sets the absolute position of the sprite in screen space
 	void setPosition(float x, float y);
 
+	// OVERRIGHTS the scale
+	void setScale(float x, float y);
+	void setScale(const sf::Vector2<float>* scale);
+
+	// NO OVERRIGHTE scales the sprite by the given
+	void scale(float x, float y);
+	void scale(const sf::Vector2<float>* scale);
+
 	// moves the sprite a relative distance from the current position
 	void move(float x, float y);
 

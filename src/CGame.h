@@ -13,6 +13,7 @@
 #include "CTexture.h"
 #include "CMap.h"
 #include "CUnit.h"
+#include "CPhysicsEngine.h"
 
 class CGame
 {
@@ -26,6 +27,7 @@ private:
 	sf::RenderWindow* m_pGameWindow;
 	CUnit* m_pTestUnit;
 	CMap* m_pTestMap;
+	CPhysicsEngine* m_pPhysicsEngine;
 
 	bool isRunning;
 	bool isPaused;

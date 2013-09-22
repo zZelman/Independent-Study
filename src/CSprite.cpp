@@ -93,6 +93,30 @@ void CSprite::setPosition(float x, float y)
 }
 
 
+void CSprite::setScale(float x, float y)
+{
+	m_pSprite->setScale(x, y);
+}
+
+
+void CSprite::setScale(const sf::Vector2<float>* scale)
+{
+	m_pSprite->setScale(*scale);
+}
+
+
+void CSprite::scale(float x, float y)
+{
+	m_pSprite->scale(x, y);
+}
+
+
+void CSprite::scale(const sf::Vector2<float>* scale)
+{
+	m_pSprite->scale(*scale);
+}
+
+
 void CSprite::move(float x, float y)
 {
 	m_pSprite->move(x, y);

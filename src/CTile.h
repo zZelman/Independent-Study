@@ -19,6 +19,10 @@ public:
 	      sf::Vector2<int> currSub);	// LENGTH current sub-image being rendered
 	~CTile();
 
+	// * returns the top left (x,y) coord, and the width & height
+	// * Screen space
+	sf::FloatRect getRect();
+
 	void setPosition(float x, float y);
 
 	void render();

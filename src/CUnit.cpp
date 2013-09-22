@@ -7,6 +7,7 @@
 
 #include <iostream>
 #include "CUnit.h"
+#include "CPhysics.h"
 #include "include_sfml.h"
 
 CUnit::CUnit(sf::RenderWindow* pWindow,
@@ -28,10 +29,12 @@ CUnit::CUnit(sf::RenderWindow* pWindow,
 	isMove_left 	= false;
 	isMove_up 		= false;
 	isMove_down 	= false;
+	isStoped		= true;
 
-	m_moveStepSize = 3;
+	sf::Vector2<float> velosity(3, 3);
+	m_sPhysics = new CPhysics(velosity);
 
-	m_animTimerMS = 70;
+	m_animTimerMS = 80;
 
 	isFirstUpdate = true;
 
@@ -51,6 +54,13 @@ CUnit::~CUnit()
 
 	delete m_pAnimationClock;
 	m_pAnimationClock = NULL;
+
+}
+
+
+sf::Vector2<int> CUnit::getSize()
+{
+	return m_subSize;
 }
 
 
@@ -127,12 +137,25 @@ void CUnit::update()
 	if (isFirstUpdate)
 	{
 		m_pAnimationClock->restart();
+
+		m_sPhysics->pGravityClock->restart();
+
 		isFirstUpdate = false;
+	}
+
+	// if is not moving, set the not-moving flag
+	if (!isMove_left && !isMove_right && !isMove_up && !isMove_down)
+	{
+		isStoped = true;
+	}
+	else
+	{
+		isStoped = false;
 	}
 
 	// update image shown
 	sf::Time elapsed = m_pAnimationClock->getElapsedTime();
-	if (elapsed.asMilliseconds() >= m_animTimerMS)
+	if (elapsed.asMilliseconds() >= m_animTimerMS && !isStoped)
 	{
 		if (m_currSub.x + 1 > m_subNum.x)
 		{
@@ -151,21 +174,24 @@ void CUnit::update()
 	// update position
 	if (isMove_left)
 	{
-		m_pSprite->move(-m_moveStepSize, 0);
 		m_currSub.y = 1;
+		m_pSprite->move(-m_sPhysics->velosity.x, 0);
 	}
+
 	if (isMove_right)
 	{
-		m_pSprite->move(m_moveStepSize, 0);
 		m_currSub.y = 2;
+		m_pSprite->move(m_sPhysics->velosity.x, 0);
 	}
+
 	if (isMove_up)
 	{
-		m_pSprite->move(0, -m_moveStepSize);
+		m_pSprite->move(0, -m_sPhysics->velosity.y);
 	}
+
 	if (isMove_down)
 	{
-		m_pSprite->move(0, m_moveStepSize);
+		m_pSprite->move(0, m_sPhysics->velosity.y);
 	}
 }
 
@@ -185,4 +211,42 @@ void CUnit::move(float x, float y)
 void CUnit::setPosition(float x, float y)
 {
 	m_pSprite->setPosition(x, y);
+}
+
+
+void CUnit::setScale(float x, float y)
+{
+	m_pSprite->setScale(x, y);
+}
+
+
+void CUnit::setScale(const sf::Vector2<float>* scale)
+{
+	m_pSprite->setScale(scale);
+}
+
+
+void CUnit::scale(float x, float y)
+{
+	m_pSprite->scale(x, y);
+}
+
+
+void CUnit::scale(const sf::Vector2<float>* scale)
+{
+	m_pSprite->scale(scale);
+}
+
+
+bool CUnit::contains(const sf::Vector2<float>* point) const
+{
+	sf::FloatRect thisRect = m_pSprite->getRect();
+	return thisRect.contains(*point);
+}
+
+
+bool CUnit::intersects(const sf::Rect<float>* rectangle) const
+{
+	sf::FloatRect thisRect = m_pSprite->getRect();
+	return thisRect.intersects(*rectangle);
 }

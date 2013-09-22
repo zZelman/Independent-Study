@@ -3,6 +3,7 @@
 #include "CSprite.h"
 #include "CTexture.h"
 #include "CMap.h"
+#include "CPhysicsEngine.h"
 #include <iostream>
 
 CGame::CGame()
@@ -32,6 +33,8 @@ CGame::CGame()
 //	mapThread.wait();
 //	unitThread.wait();
 
+	m_pPhysicsEngine = new CPhysicsEngine(m_pTestMap, m_pTestUnit);
+
 	isRunning = false;
 	isPaused = false;
 }
@@ -47,6 +50,9 @@ CGame::~CGame()
 
 	delete m_pTestUnit;
 	m_pTestUnit = NULL;
+
+	delete m_pPhysicsEngine;
+	m_pPhysicsEngine = NULL;
 }
 
 
@@ -64,7 +70,9 @@ void CGame::stopGame()
 
 void CGame::initWindow()
 {
-	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(500, 500), "Independent Study");
+	int numTiles = 20;
+	int sizeTile = 32;
+	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(sizeTile*numTiles, sizeTile*numTiles), "Independent Study");
 
 	// NOTE: do not use Virtual Sync and fixed frame rate at once
 //	m_pGameWindow->setVerticalSyncEnabled(true);
@@ -211,6 +219,7 @@ void CGame::update()
 {
 	m_pTestMap->update();
 	m_pTestUnit->update();
+	m_pPhysicsEngine->update();
 }
 
 

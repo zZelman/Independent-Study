@@ -23,6 +23,12 @@ CTile::~CTile()
 }
 
 
+sf::FloatRect CTile::getRect()
+{
+	return m_pSprite->getRect();
+}
+
+
 void CTile::setPosition(float x, float y)
 {
 	m_pSprite->setPosition(x, y);

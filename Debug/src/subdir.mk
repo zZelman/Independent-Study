@@ -6,6 +6,8 @@
 CPP_SRCS += \
 ../src/CGame.cpp \
 ../src/CMap.cpp \
+../src/CPhysics.cpp \
+../src/CPhysicsEngine.cpp \
 ../src/CSprite.cpp \
 ../src/CTexture.cpp \
 ../src/CTile.cpp \
@@ -15,6 +17,8 @@ CPP_SRCS += \
 OBJS += \
 ./src/CGame.o \
 ./src/CMap.o \
+./src/CPhysics.o \
+./src/CPhysicsEngine.o \
 ./src/CSprite.o \
 ./src/CTexture.o \
 ./src/CTile.o \
@@ -24,6 +28,8 @@ OBJS += \
 CPP_DEPS += \
 ./src/CGame.d \
 ./src/CMap.d \
+./src/CPhysics.d \
+./src/CPhysicsEngine.d \
 ./src/CSprite.d \
 ./src/CTexture.d \
 ./src/CTile.d \
