@@ -130,7 +130,36 @@ bool CGame::input_user(sf::Event* pEvent)
 		default:
 			break;
 		}
+
+		if (pEvent->key.code == sf::Keyboard::Left ||
+		        pEvent->key.code == sf::Keyboard::Right ||
+		        pEvent->key.code == sf::Keyboard::Up ||
+		        pEvent->key.code == sf::Keyboard::Down)
+		{
+			m_pTestUnit->input(&pEvent->key.code, true);
+		}
 	}
+	else if (pEvent->type == sf::Event::KeyReleased)
+	{
+		switch (pEvent->key.code)
+		{
+		case sf::Keyboard::Escape:
+			m_pGameWindow->close();
+			return true;
+			break;
+		default:
+			break;
+		}
+
+		if (pEvent->key.code == sf::Keyboard::Left ||
+		        pEvent->key.code == sf::Keyboard::Right ||
+		        pEvent->key.code == sf::Keyboard::Up ||
+		        pEvent->key.code == sf::Keyboard::Down)
+		{
+			m_pTestUnit->input(&pEvent->key.code, false);
+		}
+	}
+
 
 	// user pressed a mouse button within the game
 	if (pEvent->type == sf::Event::MouseButtonPressed)

@@ -9,23 +9,27 @@
 #include "CSprite.h"
 
 CTile::CTile(sf::RenderWindow* pWindow,
-		CTexture* pTexture,
-		sf::Vector2<int> currSub) {
+             CTexture* pTexture,
+             sf::Vector2<int> currSub)
+{
 	m_pSprite = new CSprite(pWindow, pTexture, currSub);
 }
 
 
-CTile::~CTile() {
+CTile::~CTile()
+{
 	delete m_pSprite;
 	m_pSprite = NULL;
 }
 
 
-void CTile::setPosition(float x, float y) {
+void CTile::setPosition(float x, float y)
+{
 	m_pSprite->setPosition(x, y);
 }
 
 
-void CTile::render() {
+void CTile::render()
+{
 	m_pSprite->render();
 }

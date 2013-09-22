@@ -10,8 +10,8 @@
 #include <assert.h>
 
 CTexture::CTexture(std::string fileName,
-        sf::Vector2<int> subSize,
-        sf::Vector2<int> subNum)
+                   sf::Vector2<int> subSize,
+                   sf::Vector2<int> subNum)
 {
 	m_subSize = subSize;
 

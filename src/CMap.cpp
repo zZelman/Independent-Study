@@ -56,17 +56,20 @@ const std::vector<CTile*>* CMap::getTiles()
 }
 
 
-sf::Vector2<int> CMap::getMapNum() const {
+sf::Vector2<int> CMap::getMapNum() const
+{
 	return m_mapNum;
 }
 
 
-sf::Vector2<int> CMap::getTileSubNum() const {
+sf::Vector2<int> CMap::getTileSubNum() const
+{
 	return m_tileSubNum;
 }
 
 
-sf::Vector2<int> CMap::getTileSize() const {
+sf::Vector2<int> CMap::getTileSize() const
+{
 	return m_tileSize;
 }
 

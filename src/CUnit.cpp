@@ -5,6 +5,7 @@
  *      Author: zZelman
  */
 
+#include <iostream>
 #include "CUnit.h"
 #include "include_sfml.h"
 
@@ -67,25 +68,72 @@ void CUnit::load()
 }
 
 
-bool CUnit::input()
+bool CUnit::input(sf::Keyboard::Key* key, bool isPressed)
 {
+	if (isPressed)
+	{
+		if (*key == sf::Keyboard::Left)
+		{
+			isMove_left = true;
+			return true;
+		}
+		if (*key == sf::Keyboard::Right)
+		{
+			isMove_right = true;
+			return true;
+		}
+		if (*key == sf::Keyboard::Up)
+		{
+			isMove_up = true;
+			return true;
+		}
+		if (*key == sf::Keyboard::Down)
+		{
+			isMove_down = true;
+			return true;
+		}
+	}
+	else
+	{
+		if (*key == sf::Keyboard::Left)
+		{
+			isMove_left = false;
+			return true;
+		}
+		if (*key == sf::Keyboard::Right)
+		{
+			isMove_right = false;
+			return true;
+		}
+		if (*key == sf::Keyboard::Up)
+		{
+			isMove_up = false;
+			return true;
+		}
+		if (*key == sf::Keyboard::Down)
+		{
+			isMove_down = false;
+			return true;
+		}
+	}
+
 	return false;
 }
 
 
 void CUnit::update()
 {
+	// don't want the first update to be wanky
 	if (isFirstUpdate)
 	{
 		m_pAnimationClock->restart();
 		isFirstUpdate = false;
 	}
 
+	// update image shown
 	sf::Time elapsed = m_pAnimationClock->getElapsedTime();
-
 	if (elapsed.asMilliseconds() >= m_animTimerMS)
 	{
-		// update image shown
 		if (m_currSub.x + 1 > m_subNum.x)
 		{
 			m_currSub.x = 1;
@@ -101,7 +149,24 @@ void CUnit::update()
 	}
 
 	// update position
-	m_pSprite->move(m_moveStepSize, m_moveStepSize);
+	if (isMove_left)
+	{
+		m_pSprite->move(-m_moveStepSize, 0);
+		m_currSub.y = 1;
+	}
+	if (isMove_right)
+	{
+		m_pSprite->move(m_moveStepSize, 0);
+		m_currSub.y = 2;
+	}
+	if (isMove_up)
+	{
+		m_pSprite->move(0, -m_moveStepSize);
+	}
+	if (isMove_down)
+	{
+		m_pSprite->move(0, m_moveStepSize);
+	}
 }
 
 

@@ -27,7 +27,7 @@ public:
 
 	// Receives input from the outside world to edit the instance
 	//		vars inside of this unit which affect how this unit acts/moves
-	bool input();
+	bool input(sf::Keyboard::Key* key, bool isPressed);
 
 	void update(); // updates this units state(s)
 	void render(); // renders unit @ m_pWindow
