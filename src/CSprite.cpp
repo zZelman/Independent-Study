@@ -43,16 +43,7 @@ sf::FloatRect CSprite::getRect()
 void CSprite::setSubImage(int row, int col)
 {
 #ifdef DEBUG
-	if (!(col <= m_pTexture->getSubNum().x && col > 0))
-	{
-		int i = 0;
-	}
 	assert(col <= m_pTexture->getSubNum().x && col > 0);
-
-	if (!(row <= m_pTexture->getSubNum().y && row > 0))
-	{
-		int i = 0;
-	}
 	assert(row <= m_pTexture->getSubNum().y && row > 0);
 #endif
 	m_currSub.x = col;

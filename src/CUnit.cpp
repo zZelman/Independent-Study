@@ -58,6 +58,32 @@ CUnit::~CUnit()
 }
 
 
+bool CUnit::isLeft() {
+	return isMove_left;
+}
+
+
+bool CUnit::isRight() {
+	return isMove_right;
+}
+
+
+bool CUnit::isUp() {
+	return isMove_up;
+}
+
+
+bool CUnit::isDown() {
+	return isMove_down;
+}
+
+
+sf::FloatRect CUnit::getRect()
+{
+	return m_pSprite->getRect();
+}
+
+
 sf::Vector2<int> CUnit::getSize()
 {
 	return m_subSize;

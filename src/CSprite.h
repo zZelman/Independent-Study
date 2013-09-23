@@ -17,7 +17,7 @@ public:
 	CSprite(sf::RenderWindow* pWindow,	// rendering window
 	        CTexture* pTexture,			// texture that this sprite will be rendering with
 	        sf::Vector2<int> currSub);	// LENGTH current sub-image being rendered
-	virtual ~CSprite();
+	~CSprite();
 
 	// * returns the top left (x,y) coord, and the width & height
 	// * Screen space

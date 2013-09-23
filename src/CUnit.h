@@ -17,11 +17,24 @@
 class CUnit
 {
 public:
+	// physics attributes of this unit
+	CPhysics* m_sPhysics;
+
 	CUnit(sf::RenderWindow* pWindow,
 	      std::string texturePath,	// Relative path to the texture file on disk
 	      sf::Vector2<int> subSize,	// LENGTH sub-image height/width
 	      sf::Vector2<int> subNum);	// LENGTH number of sub images
 	~CUnit();
+
+	// movement getter methods
+	bool isLeft();
+	bool isRight();
+	bool isUp();
+	bool isDown();
+
+	// * returns the top left (x,y) coord, and the width & height
+	// * Screen space
+	sf::FloatRect getRect();
 
 	// returns the width/height of this sprite
 	sf::Vector2<int> getSize();
@@ -79,9 +92,6 @@ private:
 	// clock that measures the animation for this unit
 	sf::Clock* m_pAnimationClock;
 	int64_t m_animTimerMS; // time between image switches
-
-	// physics attributes of this unit
-	CPhysics* m_sPhysics;
 
 	// allows certain things to happen only on the first update
 	bool isFirstUpdate;
