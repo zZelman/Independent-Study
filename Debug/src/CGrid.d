@@ -1,4 +1,4 @@
-src/CSprite.d: ../src/CSprite.cpp ../src/CSprite.h ../src/include_sfml.h \
+src/CGrid.d: ../src/CGrid.cpp ../src/CGrid.h ../src/include_sfml.h \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Window.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/System.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Config.hpp \
@@ -73,9 +73,10 @@ src/CSprite.d: ../src/CSprite.cpp ../src/CSprite.h ../src/include_sfml.h \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBuffer.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
- ../src/CTexture.h ../src/IRenderable.h
+ ../src/CAtomicVoxel.h ../src/CTexture.h ../src/CSprite.h \
+ ../src/IRenderable.h ../src/IUpdateable.h
 
-../src/CSprite.h:
+../src/CGrid.h:
 
 ../src/include_sfml.h:
 
@@ -227,6 +228,12 @@ src/CSprite.d: ../src/CSprite.cpp ../src/CSprite.h ../src/include_sfml.h \
 
 /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp:
 
+../src/CAtomicVoxel.h:
+
 ../src/CTexture.h:
 
+../src/CSprite.h:
+
 ../src/IRenderable.h:
+
+../src/IUpdateable.h:

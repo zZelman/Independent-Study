@@ -2,41 +2,39 @@
 #include "include_sfml.h"
 #include "CSprite.h"
 #include "CTexture.h"
-#include "CMap.h"
-#include "CPhysicsEngine.h"
 #include <iostream>
+#include <assert.h>
 
 CGame::CGame()
 {
-	initWindow();
+	initWindow(); // m_pGameWindow new'ed here
 
-	m_pTestMap = new CMap(m_pGameWindow,
-	                      "res/tile sets/testing.txt");
-	m_pTestMap->load();
-//	sf::Thread mapThread(&CMap::load, m_pTestMap);
-//	mapThread.launch();
-
-	sf::Vector2<int> subSize(32, 46);
-	sf::Vector2<int> subNum(6, 2);
-	m_pTestUnit = new CUnit(m_pGameWindow,
-	                        "res/ninja (46h 32w).png",
-	                        subSize,
-	                        subNum);
-	m_pTestUnit->load();
-	m_pTestUnit->setPosition(0, 0);
-//	sf::Thread unitThread(&CUnit::load, m_pTestUnit);
-//	unitThread.launch();
-
-	// ... [load other things] ...
-
-	// cannot begin the game until everything is loaded
-//	mapThread.wait();
-//	unitThread.wait();
-
-	m_pPhysicsEngine = new CPhysicsEngine(m_pTestMap, m_pTestUnit);
+	sf::Vector2<int> gridSize(35, 35);
+	sf::Vector2<int> gridSubSize(20, 20); // 1 cell is 20x20 pixels
+	m_pGrid = new CGrid(m_pGameWindow,
+	                    gridSize, gridSubSize,
+	                    "res/Atomic Voxels/AV placeholder art(20w 20h).png",
+	                    sf::Vector2<int>(20, 20),
+	                    sf::Vector2<int>(4, 6));
 
 	isRunning = false;
 	isPaused = false;
+}
+
+
+CGame::CGame(const CGame& other)
+{
+//	m_pGameWindow = new sf::RenderWindow();
+//	*m_pGameWindow = *(other.m_pGameWindow);
+
+	std::cout << "CGame copy constructor called, exiting" << std::endl;
+	assert(false);
+
+	m_pGrid = new CGrid();
+	*m_pGrid = *(other.m_pGrid);
+
+	isRunning = other.isRunning;
+	isPaused = other.isPaused;
 }
 
 
@@ -45,14 +43,60 @@ CGame::~CGame()
 	delete m_pGameWindow;
 	m_pGameWindow = NULL;
 
-	delete m_pTestMap;
-	m_pTestMap = NULL;
+	delete m_pGrid;
+	m_pGrid = NULL;
 
-	delete m_pTestUnit;
-	m_pTestUnit = NULL;
+}
 
-	delete m_pPhysicsEngine;
-	m_pPhysicsEngine = NULL;
+
+CGame& CGame::operator=(const CGame& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	std::cout << "CGame operator= called, exiting" << std::endl;
+	assert(false);
+
+	// [QUESTION] not sure if need delete?
+//	if (m_pGameWindow != NULL)
+//	{
+//		delete m_pGameWindow;
+//	}
+//	m_pGameWindow = new sf::RenderWindow();
+//	*m_pGameWindow = *(other.m_pGameWindow);
+
+	// [QUESTION] not sure if need delete?
+	if (m_pGrid != NULL)
+	{
+		delete m_pGrid;
+	}
+	m_pGrid = new CGrid();
+	*m_pGrid = *(other.m_pGrid);
+
+	isRunning = other.isRunning;
+	isPaused = other.isPaused;
+
+	return *this;
+}
+
+
+sf::RenderWindow* CGame::getGameWindow()
+{
+	return m_pGameWindow;
+}
+
+
+bool CGame::getIsRunning()
+{
+	return isRunning;
+}
+
+
+bool CGame::getIsPaused()
+{
+	return isPaused;
 }
 
 
@@ -70,9 +114,9 @@ void CGame::stopGame()
 
 void CGame::initWindow()
 {
-	int numTiles = 20;
-	int sizeTile = 32;
-	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(sizeTile*numTiles, sizeTile*numTiles), "Independent Study");
+	int numTiles = 35;
+	int sizeTile = 20;
+	m_pGameWindow 	= new sf::RenderWindow(sf::VideoMode(sizeTile * numTiles, sizeTile * numTiles), "Independent Study");
 
 	// NOTE: do not use Virtual Sync and fixed frame rate at once
 //	m_pGameWindow->setVerticalSyncEnabled(true);
@@ -144,7 +188,6 @@ bool CGame::input_user(sf::Event* pEvent)
 		        pEvent->key.code == sf::Keyboard::Up ||
 		        pEvent->key.code == sf::Keyboard::Down)
 		{
-			m_pTestUnit->input(&pEvent->key.code, true);
 		}
 	}
 	else if (pEvent->type == sf::Event::KeyReleased)
@@ -164,7 +207,6 @@ bool CGame::input_user(sf::Event* pEvent)
 		        pEvent->key.code == sf::Keyboard::Up ||
 		        pEvent->key.code == sf::Keyboard::Down)
 		{
-			m_pTestUnit->input(&pEvent->key.code, false);
 		}
 	}
 
@@ -217,9 +259,7 @@ bool CGame::input_gameSystem(sf::Event* pEvent)
 
 void CGame::update()
 {
-	m_pTestMap->update();
-	m_pTestUnit->update();
-	m_pPhysicsEngine->update();
+	m_pGrid->update();
 }
 
 
@@ -227,10 +267,8 @@ void CGame::render()
 {
 	m_pGameWindow->clear(sf::Color::White); // clear screen with a black background
 
-
 	// drawing here...
-	m_pTestMap->render();
-	m_pTestUnit->render();
+	m_pGrid->render();
 
 	m_pGameWindow->display(); // displays what has been rendered since last clear
 }

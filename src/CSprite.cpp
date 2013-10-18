@@ -10,16 +10,25 @@
 #include "CTexture.h"
 #include <assert.h>
 
+
+CSprite::CSprite()
+{
+	m_pWindow = NULL;
+	m_pTexture = NULL;
+	m_pSprite = NULL;
+}
+
+
 CSprite::CSprite(sf::RenderWindow* pWindow,
                  CTexture* pTexture,
-                 sf::Vector2<int> currSub)
+                 const sf::Vector2<int>& currSub)
 {
 	m_pWindow	= pWindow;
 
 	m_pTexture = pTexture;
 
 	m_pSprite = new sf::Sprite();
-	m_pSprite->setTexture(m_pTexture->getTexture());
+	m_pSprite->setTexture(*(m_pTexture->getTexture()));
 
 	m_currSub = currSub;
 	setSubImage(&currSub);
@@ -31,6 +40,48 @@ CSprite::~CSprite()
 {
 	delete m_pSprite;
 	m_pSprite = NULL;
+
+	// m_pWindow && m_pTexture are managed externally
+}
+
+
+CSprite::CSprite(const CSprite& other)
+{
+	// [QUESTION] if a pointer is managed externally, do you need to allocate
+	//		a 'new' in a copy constructor/copy assignment?
+
+	m_pWindow = other.m_pWindow; // managed externally
+
+	m_pTexture = other.m_pTexture; // managed externally
+
+	m_pSprite = new sf::Sprite();
+	*m_pSprite = *(other.m_pSprite);
+}
+
+
+CSprite& CSprite::operator=(const CSprite& other)
+{
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	// [QUESTION] if a pointer is managed externally, do you need to allocate
+	//		a 'new' in a copy constructor/copy assignment?
+
+	m_pWindow = other.m_pWindow; // managed externally
+
+	m_pTexture = other.m_pTexture; // managed externally
+
+	// [QUESTION] should i conditionally delete?
+	if (m_pSprite != NULL)
+	{
+		delete m_pSprite;
+	}
+	m_pSprite = new sf::Sprite();
+	*m_pSprite = *(other.m_pSprite);
+
+	return *this;
 }
 
 
@@ -40,7 +91,7 @@ sf::FloatRect CSprite::getRect()
 }
 
 
-void CSprite::setSubImage(int row, int col)
+void CSprite::setSubImage(int col, int row)
 {
 #ifdef DEBUG
 	assert(col <= m_pTexture->getSubNum().x && col > 0);
@@ -81,6 +132,12 @@ void CSprite::setSubImage(const sf::Vector2<int>* newSub)
 void CSprite::setPosition(float x, float y)
 {
 	m_pSprite->setPosition(x, y);
+}
+
+
+void CSprite::setPosition(const sf::Vector2<int>& pos)
+{
+	setPosition(pos.x, pos.y);
 }
 
 

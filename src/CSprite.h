@@ -10,25 +10,31 @@
 
 #include "include_sfml.h"
 #include "CTexture.h"
+#include "IRenderable.h"
 
-class CSprite
+class CSprite : public IRenderable
 {
 public:
+	CSprite();
 	CSprite(sf::RenderWindow* pWindow,	// rendering window
 	        CTexture* pTexture,			// texture that this sprite will be rendering with
-	        sf::Vector2<int> currSub);	// LENGTH current sub-image being rendered
+	        const sf::Vector2<int>& currSub);	// LENGTH current sub-image being rendered
 	~CSprite();
+	CSprite(const CSprite& other);
+
+	CSprite& operator=(const CSprite& other);
 
 	// * returns the top left (x,y) coord, and the width & height
 	// * Screen space
 	sf::FloatRect getRect();
 
 	// sets the current sub image being rendered from the texture
-	void setSubImage(int row, int col);
+	void setSubImage(int col, int row);
 	void setSubImage(const sf::Vector2<int>* newSub);
 
 	// sets the absolute position of the sprite in screen space
 	void setPosition(float x, float y);
+	void setPosition(const sf::Vector2<int>& pos);
 
 	// OVERRIGHTS the scale
 	void setScale(float x, float y);

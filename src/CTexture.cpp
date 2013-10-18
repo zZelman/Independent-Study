@@ -9,6 +9,13 @@
 #include "include_sfml.h"
 #include <assert.h>
 
+
+CTexture::CTexture()
+{
+	m_pTexture = NULL;
+}
+
+
 CTexture::CTexture(std::string fileName,
                    sf::Vector2<int> subSize,
                    sf::Vector2<int> subNum)
@@ -17,34 +24,66 @@ CTexture::CTexture(std::string fileName,
 
 	m_subNum = subNum;
 
+	m_pTexture = new sf::Texture();
+
 	load(fileName);
 }
 
 
 CTexture::~CTexture()
 {
+	delete m_pTexture;
+	m_pTexture = NULL;
 }
 
 
-const sf::Texture& CTexture::getTexture() const
+CTexture::CTexture(const CTexture& other)
 {
-	return m_texture;
+	m_pTexture = new sf::Texture();
+	*m_pTexture = *(other.m_pTexture);
+
+	m_subSize = other.m_subSize;
+
+	m_subNum = other.m_subNum;
 }
 
-void CTexture::setTexture(const sf::Texture& texture)
+
+CTexture& CTexture::operator=(const CTexture& other)
 {
-	m_texture = texture;
+	if (this == &other)
+	{
+		return *this;
+	}
+
+	if (m_pTexture != NULL)
+	{
+		delete m_pTexture;
+	}
+	m_pTexture = new sf::Texture();
+	*m_pTexture = *(other.m_pTexture);
+
+	m_subSize = other.m_subSize;
+
+	m_subNum = other.m_subNum;
+
+	return *this;
 }
 
 
-//void CTexture::setCurrSub(sf::Vector2<int> currSub) {
-//#ifdef DEBUG
-//	assert(currSub.y > 0 && currSub.x > 0);
-//	assert(currSub.y <= subNum.y && currSub.x <= subNum.x);
-//#endif
-//
-//	this->currSub = currSub;
-//}
+sf::Texture* CTexture::getTexture() const
+{
+	return m_pTexture;
+}
+
+
+void CTexture::setTexture(sf::Texture* texture)
+{
+	if (m_pTexture != NULL)
+	{
+		delete m_pTexture;
+	}
+	m_pTexture = texture;
+}
 
 
 sf::Vector2<int> CTexture::getSubNum() const
@@ -61,10 +100,10 @@ sf::Vector2<int> CTexture::getSubSize() const
 
 void CTexture::load(std::string fileName)
 {
-	bool isLoaded = m_texture.loadFromFile(fileName);
+	bool isLoaded = m_pTexture->loadFromFile(fileName);
 #ifdef DEBUG
 	assert(isLoaded);
 #endif
-	m_texture.setSmooth(true);
-	m_texture.setRepeated(false);
+	m_pTexture->setSmooth(true);
+	m_pTexture->setRepeated(false);
 }

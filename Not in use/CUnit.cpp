@@ -32,9 +32,9 @@ CUnit::CUnit(sf::RenderWindow* pWindow,
 	isStoped		= true;
 
 	sf::Vector2<float> velosity(3, 3);
-	m_sPhysics = new CPhysics(velosity);
+	m_pPhysics = new CPhysics(velosity);
 
-	m_animTimerMS = 80;
+	m_animTimerMS = 90;
 
 	isFirstUpdate = true;
 
@@ -58,22 +58,26 @@ CUnit::~CUnit()
 }
 
 
-bool CUnit::isLeft() {
+bool CUnit::isLeft()
+{
 	return isMove_left;
 }
 
 
-bool CUnit::isRight() {
+bool CUnit::isRight()
+{
 	return isMove_right;
 }
 
 
-bool CUnit::isUp() {
+bool CUnit::isUp()
+{
 	return isMove_up;
 }
 
 
-bool CUnit::isDown() {
+bool CUnit::isDown()
+{
 	return isMove_down;
 }
 
@@ -164,7 +168,7 @@ void CUnit::update()
 	{
 		m_pAnimationClock->restart();
 
-		m_sPhysics->pGravityClock->restart();
+		m_pPhysics->pGravityClock->restart();
 
 		isFirstUpdate = false;
 	}
@@ -201,23 +205,23 @@ void CUnit::update()
 	if (isMove_left)
 	{
 		m_currSub.y = 1;
-		m_pSprite->move(-m_sPhysics->velosity.x, 0);
+		m_pSprite->move(-m_pPhysics->velosity.x, 0);
 	}
 
 	if (isMove_right)
 	{
 		m_currSub.y = 2;
-		m_pSprite->move(m_sPhysics->velosity.x, 0);
+		m_pSprite->move(m_pPhysics->velosity.x, 0);
 	}
 
 	if (isMove_up)
 	{
-		m_pSprite->move(0, -m_sPhysics->velosity.y);
+		m_pSprite->move(0, -m_pPhysics->velosity.y);
 	}
 
 	if (isMove_down)
 	{
-		m_pSprite->move(0, m_sPhysics->velosity.y);
+		m_pSprite->move(0, m_pPhysics->velosity.y);
 	}
 }
 

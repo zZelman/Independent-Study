@@ -43,7 +43,7 @@ void CPhysicsEngine::update()
 			sf::FloatRect unitRect = m_pUnit->getRect();
 			float unit_width 	= unitRect.width;
 			float unit_height 	= unitRect.height;
-			float unit_topX 	= unitRect.left + m_pUnit->m_sPhysics->velosity.x;
+			float unit_topX 	= unitRect.left + m_pUnit->m_pPhysics->velosity.x;
 			float unit_topY 	= unitRect.top;
 
 			const sf::FloatRect nextUnitStep(unit_topX, unit_topY, unit_width, unit_height);
@@ -60,7 +60,7 @@ void CPhysicsEngine::update()
 			sf::FloatRect unitRect = m_pUnit->getRect();
 			float unit_width 	= unitRect.width;
 			float unit_height 	= unitRect.height;
-			float unit_topX 	= unitRect.left - m_pUnit->m_sPhysics->velosity.x;
+			float unit_topX 	= unitRect.left - m_pUnit->m_pPhysics->velosity.x;
 			float unit_topY 	= unitRect.top;
 
 			const sf::FloatRect nextUnitStep(unit_topX, unit_topY, unit_width, unit_height);
@@ -78,7 +78,7 @@ void CPhysicsEngine::update()
 			float unit_width 	= unitRect.width;
 			float unit_height 	= unitRect.height;
 			float unit_topX 	= unitRect.left;
-			float unit_topY 	= unitRect.top - m_pUnit->m_sPhysics->velosity.y;
+			float unit_topY 	= unitRect.top - m_pUnit->m_pPhysics->velosity.y;
 
 			const sf::FloatRect nextUnitStep(unit_topX, unit_topY, unit_width, unit_height);
 
@@ -95,7 +95,7 @@ void CPhysicsEngine::update()
 			float unit_width 	= unitRect.width;
 			float unit_height 	= unitRect.height;
 			float unit_topX 	= unitRect.left;
-			float unit_topY 	= unitRect.top + m_pUnit->m_sPhysics->velosity.y;
+			float unit_topY 	= unitRect.top + m_pUnit->m_pPhysics->velosity.y;
 
 			const sf::FloatRect nextUnitStep(unit_topX, unit_topY, unit_width, unit_height);
 

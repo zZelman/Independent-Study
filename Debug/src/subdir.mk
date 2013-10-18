@@ -4,36 +4,33 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/CAtomicVoxel.cpp \
 ../src/CGame.cpp \
-../src/CMap.cpp \
-../src/CPhysics.cpp \
-../src/CPhysicsEngine.cpp \
+../src/CGrid.cpp \
 ../src/CSprite.cpp \
 ../src/CTexture.cpp \
-../src/CTile.cpp \
-../src/CUnit.cpp \
+../src/IRenderable.cpp \
+../src/IUpdateable.cpp \
 ../src/main.cpp 
 
 OBJS += \
+./src/CAtomicVoxel.o \
 ./src/CGame.o \
-./src/CMap.o \
-./src/CPhysics.o \
-./src/CPhysicsEngine.o \
+./src/CGrid.o \
 ./src/CSprite.o \
 ./src/CTexture.o \
-./src/CTile.o \
-./src/CUnit.o \
+./src/IRenderable.o \
+./src/IUpdateable.o \
 ./src/main.o 
 
 CPP_DEPS += \
+./src/CAtomicVoxel.d \
 ./src/CGame.d \
-./src/CMap.d \
-./src/CPhysics.d \
-./src/CPhysicsEngine.d \
+./src/CGrid.d \
 ./src/CSprite.d \
 ./src/CTexture.d \
-./src/CTile.d \
-./src/CUnit.d \
+./src/IRenderable.d \
+./src/IUpdateable.d \
 ./src/main.d 
 
 
@@ -41,7 +38,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	g++ -DDEBUG -I"/home/zZelman/1 Programing/C++/Independent-Study/SFML-2.1/include" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	g++ -DDEBUG -I"/home/zZelman/Dropbox/Independent-Study/SFML-2.1/include" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

@@ -44,7 +44,7 @@ all: Independent-Study
 Independent-Study: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C++ Linker'
-	g++ -L"/home/zZelman/1 Programing/C++/Independent-Study/SFML-2.1/lib" -Xlinker -rpath "/home/zZelman/1 Programing/C++/Independent-Study/SFML-2.1/lib" -o "Independent-Study" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L"/home/zZelman/Dropbox/Independent-Study/SFML-2.1/lib" -Xlinker -rpath "/home/zZelman/Dropbox/Independent-Study/SFML-2.1/lib" -o "Independent-Study" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

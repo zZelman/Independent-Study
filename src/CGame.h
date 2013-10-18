@@ -11,23 +11,28 @@
 #include "include_sfml.h"
 #include "CSprite.h"
 #include "CTexture.h"
-#include "CMap.h"
-#include "CUnit.h"
-#include "CPhysicsEngine.h"
+#include "CGrid.h"
 
 class CGame
 {
 public:
 	CGame();
+	CGame(const CGame& other);
 	~CGame();
+
+	CGame& operator=(const CGame& other);
+
+	sf::RenderWindow* getGameWindow();
+
+	bool getIsRunning();
+	bool getIsPaused();
 
 	void startGame();
 	void stopGame();
+
 private:
 	sf::RenderWindow* m_pGameWindow;
-	CUnit* m_pTestUnit;
-	CMap* m_pTestMap;
-	CPhysicsEngine* m_pPhysicsEngine;
+	CGrid* m_pGrid;
 
 	bool isRunning;
 	bool isPaused;

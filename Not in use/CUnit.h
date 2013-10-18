@@ -18,7 +18,7 @@ class CUnit
 {
 public:
 	// physics attributes of this unit
-	CPhysics* m_sPhysics;
+	CPhysics* m_pPhysics;
 
 	CUnit(sf::RenderWindow* pWindow,
 	      std::string texturePath,	// Relative path to the texture file on disk
@@ -38,16 +38,6 @@ public:
 
 	// returns the width/height of this sprite
 	sf::Vector2<int> getSize();
-
-	// method that loads based on instance variables
-	void load();
-
-	// Receives input from the outside world to edit the instance
-	//		vars inside of this unit which affect how this unit acts/moves
-	bool input(sf::Keyboard::Key* key, bool isPressed);
-
-	void update(); // updates this units state(s)
-	void render(); // renders unit @ m_pWindow
 
 	// Relative movement of the unit based on its current position
 	void move(float x, float y);
@@ -70,6 +60,16 @@ public:
 	// * SCREEN SPACE
 	// * takes into consideration rotation/transformations
 	bool intersects(const sf::Rect<float>* rectangle) const;
+
+	// method that loads based on instance variables
+	void load();
+
+	// Receives input from the outside world to edit the instance
+	//		vars inside of this unit which affect how this unit acts/moves
+	bool input(sf::Keyboard::Key* key, bool isPressed);
+
+	void update(); // updates this units state(s)
+	void render(); // renders unit @ m_pWindow
 
 private:
 	sf::RenderWindow* m_pWindow; 	// where this unit will be rendered
