@@ -69,6 +69,7 @@ public:
 
 	// adds a AV to the AP data-structure
 	void addAnchorParent(CAtomicVoxel* AP);
+	void removeAnchorParent(CAtomicVoxel* AP);
 
 	// creates a new AP @ screen pos IF one isnt already there
 	void createAP(sf::Vector2<int>* screenPos);

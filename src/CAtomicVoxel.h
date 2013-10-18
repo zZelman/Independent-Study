@@ -55,6 +55,7 @@ public:
 
 	// returns the anchor parent of the structure that this AV is within
 	CAtomicVoxel* findAnchorParent();
+	void setParent(CAtomicVoxel* AV);
 
 	// * relative movement based on current position
 	// * MOVES CHILDREN TOO
@@ -110,6 +111,28 @@ private:
 	// * update the screen position based on the grid position
 	// * also updates the m_pSprite
 	void setScreenPos();
+
+	// removes this structure's AV pointers from the 2D Grid
+	void removePointersFromDataStructure();
+
+	// re-adds this structure's AV pointers to the 2D grid
+	void addPointersToDataStructure();
+
+	// decompositions of the move function
+	void move_x(int dx);
+	void move_y(int dy);
+
+	// * check to see if ALL of the structure can move in the direction
+	// * checks only grid edges
+	// * NOT COLLISION
+	bool canMove_x(int dx);
+	bool canMove_y(int dy);
+
+	// * checks for collision of other AV on the 2D data structure
+	// * adds them to this children if collision happens
+	// * checks with FUTURE movement, does not move this AV
+	bool isCollisionDetected_x(int dx);
+	bool isCollisionDetected_y(int dy);
 };
 
 

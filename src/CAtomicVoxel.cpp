@@ -8,6 +8,7 @@
 #include "CAtomicVoxel.h"
 #include "include_sfml.h"
 #include <iostream>
+#include <assert.h>
 
 CAtomicVoxel::CAtomicVoxel()
 {
@@ -100,9 +101,24 @@ void CAtomicVoxel::render()
 
 CAtomicVoxel* CAtomicVoxel::findAnchorParent()
 {
-	// TODO
+	CAtomicVoxel* returnMe = this;
 
-	return this;
+	while (returnMe->m_pParentAV != NULL)
+	{
+		returnMe = returnMe->m_pParentAV;
+	}
+
+	return returnMe;
+}
+
+
+void CAtomicVoxel::setParent(CAtomicVoxel* AV)
+{
+#ifdef DEBUG
+	assert(m_pParentAV == NULL);
+#endif
+
+	m_pParentAV = AV;
 }
 
 
@@ -114,25 +130,105 @@ void CAtomicVoxel::move(const sf::Vector2<int>& delta)
 
 void CAtomicVoxel::move(int dx, int dy)
 {
-	// self
-	sf::Vector2<int> gridSize = m_pGrid->getGridSize();
-	if (((m_gridPos.x + dx) < gridSize.x) &&
-			((m_gridPos.x + dx) >= 0))
+	// remove this structure from data structure
+	removePointersFromDataStructure();
+
+	if (dx != 0)
 	{
-		m_gridPos.x += dx;
+		if (canMove_x(dx))
+		{
+			if (isCollisionDetected_x(dx) == true)
+			{
+			}
+			else
+			{
+				move_x(dx);
+			}
+		}
 	}
 
-	if (((m_gridPos.y + dy) < gridSize.y) &&
-			((m_gridPos.y + dy) >= 0))
+	if (dy != 0)
 	{
-		m_gridPos.y += dy;
+		if (canMove_y(dy))
+		{
+			if (isCollisionDetected_y(dy) == true)
+			{
+			}
+			else
+			{
+				move_y(dy);
+			}
+		}
 	}
-	setScreenPos();
+
+	addPointersToDataStructure();
+}
+
+
+bool CAtomicVoxel::canMove_x(int dx)
+{
+	sf::Vector2<int> gridSize = m_pGrid->getGridSize();
+	int futureX = m_gridPos.x + dx;
+
+	bool canMove = true;
+
+	// self
+	if (!(futureX >= 0) || !(futureX < gridSize.x))
+	{
+		return false;
+	}
 
 	// children
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
-		m_childrenAV[i]->move(dx, dy);
+		canMove = m_childrenAV[i]->canMove_x(dx);
+	}
+	return canMove;
+}
+
+
+bool CAtomicVoxel::canMove_y(int dy)
+{
+	sf::Vector2<int> gridSize = m_pGrid->getGridSize();
+	int futureY = m_gridPos.y + dy;
+
+	bool canMove = true;
+
+	// self
+	if (!(futureY >= 0) || !(futureY < gridSize.y))
+	{
+		return false;
+	}
+
+	// children
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		canMove = m_childrenAV[i]->canMove_y(dy);
+	}
+	return canMove;
+}
+
+
+void CAtomicVoxel::move_x(int dx)
+{
+	m_gridPos.x += dx;
+	setScreenPos();
+
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV[i]->move_x(dx);
+	}
+}
+
+
+void CAtomicVoxel::move_y(int dy)
+{
+	m_gridPos.y += dy;
+	setScreenPos();
+
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV[i]->move_y(dy);
 	}
 }
 
@@ -167,8 +263,7 @@ void CAtomicVoxel::updateEdge_remove(CAtomicVoxel* anchorParent)
 
 void CAtomicVoxel::bindAVasChild(CAtomicVoxel* AV)
 {
-	// TODO
-
+	m_childrenAV.push_back(AV);
 }
 
 
@@ -209,4 +304,90 @@ void CAtomicVoxel::setScreenPos()
 	m_screenPos = m_gridPos;
 	m_pGrid->gridToScreen(&m_screenPos);
 	m_pSprite->setPosition(m_screenPos);
+}
+
+
+void CAtomicVoxel::removePointersFromDataStructure()
+{
+	m_pGrid->setPos(m_gridPos, NULL);
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV[i]->removePointersFromDataStructure();
+	}
+}
+
+
+void CAtomicVoxel::addPointersToDataStructure()
+{
+	m_pGrid->setPos(m_gridPos, this);
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV[i]->addPointersToDataStructure();
+	}
+}
+
+
+bool CAtomicVoxel::isCollisionDetected_x(int dx)
+{
+	bool isCollision = false;
+
+	int futureX = m_gridPos.x + dx;
+	CAtomicVoxel* possibleAV = m_pGrid->returnPos(futureX, m_gridPos.y);
+
+	bool isBound = false;
+	if (possibleAV != NULL) // collision
+	{
+		CAtomicVoxel* otherAP = possibleAV->findAnchorParent();
+		bindAVasChild(otherAP);
+		otherAP->setParent(this);
+
+		m_pGrid->removeAnchorParent(otherAP);
+
+		removePointersFromDataStructure();
+
+		isCollision = true;
+		isBound = true;
+	}
+
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		isCollision = m_childrenAV[i]->isCollisionDetected_x(dx);
+		if (isCollision == true || isBound)
+			isCollision = true;
+	}
+
+	return isCollision;
+}
+
+
+bool CAtomicVoxel::isCollisionDetected_y(int dy)
+{
+	bool isCollision = false;
+
+	int futureY = m_gridPos.y + dy;
+	CAtomicVoxel* possibleAV = m_pGrid->returnPos(m_gridPos.x, futureY);
+
+	bool isBound = false;
+	if (possibleAV != NULL) // collision
+	{
+		CAtomicVoxel* otherAP = possibleAV->findAnchorParent();
+		bindAVasChild(otherAP);
+		otherAP->setParent(this);
+
+		m_pGrid->removeAnchorParent(otherAP);
+
+		removePointersFromDataStructure();
+
+		isCollision = true;
+		isBound = true;
+	}
+
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		bool tempBool = m_childrenAV[i]->isCollisionDetected_y(dy);
+		if (tempBool == true || isBound == true)
+			isCollision = true;
+	}
+
+	return isCollision;
 }

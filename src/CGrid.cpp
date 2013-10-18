@@ -8,6 +8,7 @@
 #include "CGrid.h"
 #include "CAtomicVoxel.h"
 #include <iostream>
+#include <assert.h>
 
 
 CGrid::CGrid()
@@ -47,10 +48,6 @@ CGrid::CGrid(sf::RenderWindow* window,
 	                             window, m_pAVTexture, sf::Vector2<int>(1, 1));
 	setPos(gridPos, m_pTestAV);
 	addAnchorParent(m_pTestAV);
-
-#ifdef DEBUG
-	printDataStructure();
-#endif
 
 }
 
@@ -190,6 +187,12 @@ bool CGrid::userInput(sf::Event* pEvent)
 		isConsumed = true;
 	}
 
+	// key p
+	if (pEvent->key.code == sf::Keyboard::P)
+	{
+		printDataStructure();
+	}
+
 	return isConsumed;
 }
 
@@ -290,6 +293,23 @@ void CGrid::addAnchorParent(CAtomicVoxel* AP)
 }
 
 
+void CGrid::removeAnchorParent(CAtomicVoxel* AP)
+{
+	for (int i = 0; i < m_anchorParents.size(); ++i)
+	{
+		if (AP == m_anchorParents[i])
+		{
+			m_anchorParents.erase(m_anchorParents.begin() + i);
+			return;
+		}
+	}
+
+	// should never get here
+	bool isAPremoved = false;
+	assert(isAPremoved);
+}
+
+
 void CGrid::createAP(sf::Vector2<int>* screenPos)
 {
 	sf::Vector2<int> gridPos = *screenPos;
@@ -317,6 +337,7 @@ void CGrid::removeAV(const sf::Vector2<int>& pos)
 
 void CGrid::printDataStructure()
 {
+	std::cout << "----" << std::endl;
 	for (int i = 0; i < m_gridSize.y; ++i)
 	{
 		for (int n = 0; n < m_gridSize.x; ++n)
@@ -331,5 +352,6 @@ void CGrid::printDataStructure()
 		}
 		std::cout << std::endl;
 	}
+	std::cout << "----" << std::endl;
 }
 
