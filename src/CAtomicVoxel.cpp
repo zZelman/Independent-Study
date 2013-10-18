@@ -34,15 +34,13 @@ CAtomicVoxel::CAtomicVoxel(CGrid* grid,
 	m_pGrid = grid;
 
 	m_gridPos = gridPos;
-	m_screenPos = gridPos;
-	grid->gridToScreen(&m_screenPos);
 
 	m_isEdge.trueALL();
 
 	m_pTexture = texture;
 
 	m_pSprite = new CSprite(window, texture, currSub);
-	m_pSprite->setPosition(m_screenPos);
+	setScreenPos();
 	chooseImageBasedOnEdge();
 }
 
@@ -108,15 +106,34 @@ CAtomicVoxel* CAtomicVoxel::findAnchorParent()
 }
 
 
-void CAtomicVoxel::move(sf::Vector2<int> delta)
+void CAtomicVoxel::move(const sf::Vector2<int>& delta)
 {
-	// TODO
-
+	move(delta.x, delta.y);
 }
 
 
 void CAtomicVoxel::move(int dx, int dy)
 {
+	// self
+	sf::Vector2<int> gridSize = m_pGrid->getGridSize();
+	if (((m_gridPos.x + dx) < gridSize.x) &&
+			((m_gridPos.x + dx) >= 0))
+	{
+		m_gridPos.x += dx;
+	}
+
+	if (((m_gridPos.y + dy) < gridSize.y) &&
+			((m_gridPos.y + dy) >= 0))
+	{
+		m_gridPos.y += dy;
+	}
+	setScreenPos();
+
+	// children
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV[i]->move(dx, dy);
+	}
 }
 
 
@@ -186,3 +203,10 @@ void CAtomicVoxel::chooseImageBasedOnEdge()
 
 }
 
+
+void CAtomicVoxel::setScreenPos()
+{
+	m_screenPos = m_gridPos;
+	m_pGrid->gridToScreen(&m_screenPos);
+	m_pSprite->setPosition(m_screenPos);
+}

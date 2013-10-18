@@ -58,7 +58,7 @@ public:
 
 	// * relative movement based on current position
 	// * MOVES CHILDREN TOO
-	void move(sf::Vector2<int> delta);
+	void move(const sf::Vector2<int>& delta);
 	void move(int dx, int dy);
 
 	// * sets absolute position of the AV
@@ -106,6 +106,10 @@ private:
 	// hard coded edge conditions to choose an image corresponding to the current
 	//		edge conditions
 	void chooseImageBasedOnEdge();
+
+	// * update the screen position based on the grid position
+	// * also updates the m_pSprite
+	void setScreenPos();
 };
 
 

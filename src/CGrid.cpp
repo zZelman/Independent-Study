@@ -42,11 +42,11 @@ CGrid::CGrid(sf::RenderWindow* window,
 
 	m_pAVTexture = new CTexture(filePath, subSize, subNum);
 
-	sf::Vector2<int> gridPos(1,1);
-	CAtomicVoxel* testVoxel = new CAtomicVoxel(this, gridPos,
-			window, m_pAVTexture, sf::Vector2<int>(1,1));
-	setPos(gridPos, testVoxel);
-	addAnchorParent(testVoxel);
+	sf::Vector2<int> gridPos(1, 1);
+	m_pTestAV = new CAtomicVoxel(this, gridPos,
+	                             window, m_pAVTexture, sf::Vector2<int>(1, 1));
+	setPos(gridPos, m_pTestAV);
+	addAnchorParent(m_pTestAV);
 
 #ifdef DEBUG
 	printDataStructure();
@@ -59,6 +59,8 @@ CGrid::~CGrid()
 {
 	delete m_pAVTexture;
 	m_pAVTexture = NULL;
+
+	delete m_pTestAV;
 
 	// m_pScreen is managed externally
 
@@ -147,6 +149,51 @@ CGrid& CGrid::operator =(const CGrid& other)
 }
 
 
+sf::Vector2<int> CGrid::getGridSize()
+{
+	return m_gridSize;
+}
+
+
+bool CGrid::userInput(sf::Event* pEvent)
+{
+	bool isConsumed = false;
+
+	// arrow keys
+	if (pEvent->key.code == sf::Keyboard::Left)
+	{
+		m_pTestAV->move(-1, 0);
+		isConsumed = true;
+	}
+	else if (pEvent->key.code == sf::Keyboard::Right)
+	{
+		m_pTestAV->move(1, 0);
+		isConsumed = true;
+	}
+	else if (pEvent->key.code == sf::Keyboard::Up)
+	{
+		m_pTestAV->move(0, -1);
+		isConsumed = true;
+	}
+	else if (pEvent->key.code == sf::Keyboard::Down)
+	{
+		m_pTestAV->move(0, 1);
+		isConsumed = true;
+	}
+
+
+	// left mouse
+	if (pEvent->mouseButton.button == sf::Mouse::Left)
+	{
+		sf::Vector2<int> pos = sf::Mouse::getPosition(*m_pScreen);
+		createAP(&pos);
+		isConsumed = true;
+	}
+
+	return isConsumed;
+}
+
+
 void CGrid::update()
 {
 }
@@ -157,7 +204,9 @@ void CGrid::render()
 	for (int i = 0; i < (m_gridSize.y * m_gridSize.x); ++i)
 	{
 		if (m_gridDataStructure[i] == NULL)
+		{
 			continue;
+		}
 		m_gridDataStructure[i]->render();
 	}
 }
@@ -218,13 +267,41 @@ void CGrid::gridToScreen(int* x, int* y)
 
 void CGrid::gridToScreen(sf::Vector2<int>* pos)
 {
-	gridToScreen((&pos->x), &(pos->y));
+	gridToScreen(&(pos->x), &(pos->y));
+}
+
+
+void CGrid::screenToGrid(int* x, int* y)
+{
+	*x = ((*x) * m_gridSize.x) / m_pScreen->getSize().x;
+	*y = ((*y) * m_gridSize.y) / m_pScreen->getSize().y;
+}
+
+
+void CGrid::screenToGrid(sf::Vector2<int>* pos)
+{
+	screenToGrid(&(pos->x), &(pos->y));
 }
 
 
 void CGrid::addAnchorParent(CAtomicVoxel* AP)
 {
 	m_anchorParents.push_back(AP);
+}
+
+
+void CGrid::createAP(sf::Vector2<int>* screenPos)
+{
+	sf::Vector2<int> gridPos = *screenPos;
+	screenToGrid(&gridPos);
+
+	if (returnPos(gridPos) == NULL)
+	{
+		CAtomicVoxel* newAP = new CAtomicVoxel(this, gridPos,
+		                                       m_pScreen, m_pAVTexture, sf::Vector2<int>(1, 1));
+		setPos(gridPos, newAP);
+		m_anchorParents.push_back(newAP);
+	}
 }
 
 

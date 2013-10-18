@@ -34,6 +34,10 @@ public:
 
 	CGrid& operator=(const CGrid& other);
 
+	sf::Vector2<int> getGridSize();
+
+	bool userInput(sf::Event* pEvent);
+
 	void update();
 	void render();
 
@@ -55,12 +59,19 @@ public:
 	//		the list must condense to remove gaps
 	void condenseStructureList();
 
-	// manipulates the values into screen space into grid space
+	// manipulates the values from grid space into screen space
 	void gridToScreen(int* x, int* y);
 	void gridToScreen(sf::Vector2<int>* pos);
 
+	// manipulates the values from screen space into grid space
+	void screenToGrid(int* x, int* y);
+	void screenToGrid(sf::Vector2<int>* pos);
+
 	// adds a AV to the AP data-structure
 	void addAnchorParent(CAtomicVoxel* AP);
+
+	// creates a new AP @ screen pos IF one isnt already there
+	void createAP(sf::Vector2<int>* screenPos);
 
 	// sets a pointer to NULL within the 2D grid data structure
 	void removeAV(int x, int y);
@@ -70,6 +81,8 @@ public:
 	void printDataStructure();
 
 private:
+	CAtomicVoxel* m_pTestAV;
+
 	// * the 2D grid data structure
 	// * NULL (0) represents a free spot
 	// * dynamic 2D array of pointers

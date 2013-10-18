@@ -188,6 +188,7 @@ bool CGame::input_user(sf::Event* pEvent)
 		        pEvent->key.code == sf::Keyboard::Up ||
 		        pEvent->key.code == sf::Keyboard::Down)
 		{
+			m_pGrid->userInput(pEvent);
 		}
 	}
 	else if (pEvent->type == sf::Event::KeyReleased)
@@ -220,6 +221,7 @@ bool CGame::input_user(sf::Event* pEvent)
 		}
 		if (pEvent->mouseButton.button == sf::Mouse::Left)
 		{
+			m_pGrid->userInput(pEvent);
 			return true;
 		}
 	}
