@@ -16,6 +16,7 @@ CGrid::CGrid()
 	m_pScreen = NULL;
 	m_pAVTexture = NULL;
 	m_gridDataStructure = NULL;
+	m_pTestAV = NULL;
 }
 
 
@@ -101,6 +102,9 @@ CGrid::CGrid(const CGrid& other)
 	}
 
 	m_anchorParents = other.m_anchorParents;
+
+	m_pTestAV = new CAtomicVoxel();
+	*m_pTestAV = *(other.m_pTestAV);
 }
 
 

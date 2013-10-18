@@ -299,12 +299,95 @@ void CAtomicVoxel::damage_breakParentBond()
 
 void CAtomicVoxel::chooseImageBasedOnEdge()
 {
-	// TODO
+	// full edge
 	if (m_isEdge.up && m_isEdge.down && m_isEdge.left && m_isEdge.right)
 	{
 		m_pSprite->setSubImage(1, 1);
+		return;
 	}
 
+	// 3 edge
+	if (m_isEdge.up && m_isEdge.down && m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(1, 2);
+		return;
+	}
+	if (m_isEdge.up && !m_isEdge.down && m_isEdge.left && m_isEdge.right)
+	{
+		m_pSprite->setSubImage(2, 2);
+		return;
+	}
+	if (m_isEdge.up && m_isEdge.down && !m_isEdge.left && m_isEdge.right)
+	{
+		m_pSprite->setSubImage(3, 2);
+		return;
+	}
+	if (!m_isEdge.up && m_isEdge.down && m_isEdge.left && m_isEdge.right)
+	{
+		m_pSprite->setSubImage(4, 2);
+		return;
+	}
+
+	// 2 edge
+	if (!m_isEdge.up && m_isEdge.down && !m_isEdge.left && m_isEdge.right)
+	{
+		m_pSprite->setSubImage(1, 3);
+		return;
+	}
+	if (!m_isEdge.up && m_isEdge.down && m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(2, 3);
+		return;
+	}
+	if (m_isEdge.up && !m_isEdge.down && m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(3, 3);
+		return;
+	}
+	if (m_isEdge.up && !m_isEdge.down && !m_isEdge.left && m_isEdge.right)
+	{
+		m_pSprite->setSubImage(4, 3);
+		return;
+	}
+	if (m_isEdge.up && m_isEdge.down && !m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(1, 4);
+		return;
+	}
+	if (!m_isEdge.up && !m_isEdge.down && m_isEdge.left && m_isEdge.right)
+	{
+		m_pSprite->setSubImage(2, 4);
+		return;
+	}
+
+	// 1 edge
+	if (!m_isEdge.up && !m_isEdge.down && !m_isEdge.left && m_isEdge.right)
+	{
+		m_pSprite->setSubImage(1, 5);
+		return;
+	}
+	if (!m_isEdge.up && m_isEdge.down && !m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(2, 5);
+		return;
+	}
+	if (!m_isEdge.up && !m_isEdge.down && m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(3, 5);
+		return;
+	}
+	if (m_isEdge.up && !m_isEdge.down && !m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(4, 5);
+		return;
+	}
+
+	// no edge
+	if (!m_isEdge.up && !m_isEdge.down && !m_isEdge.left && !m_isEdge.right)
+	{
+		m_pSprite->setSubImage(1, 6);
+		return;
+	}
 }
 
 
@@ -354,14 +437,28 @@ bool CAtomicVoxel::isCollisionDetected_x(int dx)
 
 		removePointersFromDataStructure();
 
+		// update on edge conditions and choose image
+		if (dx > 0) // moving right
+		{
+			m_isEdge.right = false;
+			possibleAV->m_isEdge.left = false;
+		}
+		else if (dx < 0) // moving left
+		{
+			m_isEdge.left = false;
+			possibleAV->m_isEdge.right = false;
+		}
+		chooseImageBasedOnEdge();
+		possibleAV->chooseImageBasedOnEdge();
+
 		isCollision = true;
 		isBound = true;
 	}
 
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
-		isCollision = m_childrenAV[i]->isCollisionDetected_x(dx);
-		if (isCollision == true || isBound)
+		bool tempBool = m_childrenAV[i]->isCollisionDetected_x(dx);
+		if (tempBool == true || isBound == true)
 			isCollision = true;
 	}
 
@@ -386,6 +483,20 @@ bool CAtomicVoxel::isCollisionDetected_y(int dy)
 		m_pGrid->removeAnchorParent(otherAP);
 
 		removePointersFromDataStructure();
+
+		// update on edge conditions and choose image
+		if (dy > 0) // moving down
+		{
+			m_isEdge.down = false;
+			possibleAV->m_isEdge.up = false;
+		}
+		else if (dy < 0) // moving up
+		{
+			m_isEdge.up = false;
+			possibleAV->m_isEdge.down= false;
+		}
+		chooseImageBasedOnEdge();
+		possibleAV->chooseImageBasedOnEdge();
 
 		isCollision = true;
 		isBound = true;
