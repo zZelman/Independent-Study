@@ -171,17 +171,21 @@ bool CAtomicVoxel::canMove_x(int dx)
 	int futureX = m_gridPos.x + dx;
 
 	bool canMove = true;
+	bool selfMove = true;
 
 	// self
 	if (!(futureX >= 0) || !(futureX < gridSize.x))
 	{
-		return false;
+		canMove = false;
+		selfMove = false;
 	}
 
 	// children
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
-		canMove = m_childrenAV[i]->canMove_x(dx);
+		bool tempBool = m_childrenAV[i]->canMove_x(dx);
+		if (tempBool == false || selfMove == false)
+			canMove = false;
 	}
 	return canMove;
 }
@@ -193,17 +197,22 @@ bool CAtomicVoxel::canMove_y(int dy)
 	int futureY = m_gridPos.y + dy;
 
 	bool canMove = true;
+	bool selfMove = true;
 
 	// self
 	if (!(futureY >= 0) || !(futureY < gridSize.y))
 	{
-		return false;
+		canMove = false;
+		selfMove = false;
 	}
 
 	// children
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
-		canMove = m_childrenAV[i]->canMove_y(dy);
+		bool tempBool = m_childrenAV[i]->canMove_y(dy);
+		if (tempBool == false || selfMove == false)
+			canMove = false;
+
 	}
 	return canMove;
 }
