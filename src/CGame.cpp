@@ -194,6 +194,10 @@ bool CGame::input_user(sf::Event* pEvent)
 		{
 			m_pGrid->userInput(pEvent);
 		}
+		if (pEvent->key.code == sf::Keyboard::Space)
+		{
+			m_pGrid->userInput(pEvent);
+		}
 	}
 	else if (pEvent->type == sf::Event::KeyReleased)
 	{

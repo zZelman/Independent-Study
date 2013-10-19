@@ -17,6 +17,7 @@ CGrid::CGrid()
 	m_pAVTexture = NULL;
 	m_gridDataStructure = NULL;
 	m_pTestAV = NULL;
+	isDataStructureNULL = false;
 }
 
 
@@ -34,13 +35,7 @@ CGrid::CGrid(sf::RenderWindow* window,
 	m_gridSubSize = gridSubSize;
 
 	m_gridDataStructure = new CAtomicVoxel*[gridSize.y * gridSize.x];
-	for (int i = 0; i < gridSize.y; ++i)
-	{
-		for (int n = 0; n < gridSize.x; ++n)
-		{
-			setPos(n, i, NULL);
-		}
-	}
+	nullALL_onGrid();
 
 	m_pAVTexture = new CTexture(filePath, subSize, subNum);
 
@@ -195,6 +190,15 @@ bool CGrid::userInput(sf::Event* pEvent)
 	if (pEvent->key.code == sf::Keyboard::P)
 	{
 		printDataStructure();
+		isConsumed = true;
+	}
+
+	// shift focus to another Structure
+	if (pEvent->key.code == sf::Keyboard::Space)
+	{
+		sf::Vector2<int> pos = sf::Mouse::getPosition(*m_pScreen);
+		focusAP(&pos);
+		isConsumed = true;
 	}
 
 	return isConsumed;
@@ -233,6 +237,15 @@ bool CGrid::isOpen(int x, int y)
 
 CAtomicVoxel* CGrid::returnPos(int x, int y)
 {
+	if (x < 0 || x > m_gridSize.x - 1)
+	{
+		return NULL;
+	}
+	if (y < 0 || y > m_gridSize.y - 1)
+	{
+		return NULL;
+	}
+
 	return m_gridDataStructure[y * m_gridSize.y + x];
 }
 
@@ -299,7 +312,7 @@ void CGrid::addAnchorParent(CAtomicVoxel* AP)
 
 void CGrid::removeAnchorParent(CAtomicVoxel* AP)
 {
-	for (int i = 0; i < m_anchorParents.size(); ++i)
+	for (uint i = 0; i < m_anchorParents.size(); ++i)
 	{
 		if (AP == m_anchorParents[i])
 		{
@@ -329,6 +342,18 @@ void CGrid::createAP(sf::Vector2<int>* screenPos)
 }
 
 
+void CGrid::focusAP(sf::Vector2<int>* screenPos)
+{
+	screenToGrid(screenPos);
+	CAtomicVoxel* av = returnPos(*screenPos);
+	if (av != NULL)
+	{
+		CAtomicVoxel* ap = av->findAnchorParent();
+		m_pTestAV = ap;
+	}
+}
+
+
 void CGrid::removeAV(int x, int y)
 {
 }
@@ -336,6 +361,29 @@ void CGrid::removeAV(int x, int y)
 
 void CGrid::removeAV(const sf::Vector2<int>& pos)
 {
+}
+
+
+void CGrid::nullALL_onGrid()
+{
+	for (int y = 0; y < m_gridSize.y; ++y)
+	{
+		for (int x = 0; x < m_gridSize.x; ++x)
+		{
+			setPos(x, y, NULL);
+		}
+	}
+	isDataStructureNULL = true;
+}
+
+
+void CGrid::applyAPstructures_toGrid()
+{
+	for (uint i = 0; i < m_anchorParents.size(); ++i)
+	{
+		m_anchorParents[i]->addStructure_toGrid();
+	}
+	isDataStructureNULL = false;
 }
 
 

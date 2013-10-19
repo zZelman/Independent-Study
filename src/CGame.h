@@ -12,8 +12,10 @@
 #include "CSprite.h"
 #include "CTexture.h"
 #include "CGrid.h"
+#include "IUpdateable.h"
+#include "IRenderable.h"
 
-class CGame
+class CGame : public IUpdateable, public IRenderable
 {
 public:
 	CGame();

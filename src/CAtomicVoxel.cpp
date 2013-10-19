@@ -21,6 +21,8 @@ CAtomicVoxel::CAtomicVoxel()
 	m_pTexture = NULL;
 
 	m_pSprite = NULL;
+
+	isStructureRemoved = true;
 }
 
 
@@ -43,6 +45,8 @@ CAtomicVoxel::CAtomicVoxel(CGrid* grid,
 	m_pSprite = new CSprite(window, texture, currSub);
 	setScreenPos();
 	chooseImageBasedOnEdge();
+
+	isStructureRemoved = false;
 }
 
 
@@ -131,7 +135,7 @@ void CAtomicVoxel::move(const sf::Vector2<int>& delta)
 void CAtomicVoxel::move(int dx, int dy)
 {
 	// remove this structure from data structure
-	removePointersFromDataStructure();
+	removeStructure_fromGrid();
 
 	if (dx != 0)
 	{
@@ -139,6 +143,12 @@ void CAtomicVoxel::move(int dx, int dy)
 		{
 			if (isCollisionDetected_x(dx) == true)
 			{
+				m_pGrid->nullALL_onGrid();
+
+				addStructure_toGrid();
+				setEdgeBools_add();
+
+				m_pGrid->applyAPstructures_toGrid();
 			}
 			else
 			{
@@ -153,6 +163,12 @@ void CAtomicVoxel::move(int dx, int dy)
 		{
 			if (isCollisionDetected_y(dy) == true)
 			{
+				m_pGrid->nullALL_onGrid();
+
+				addStructure_toGrid();
+				setEdgeBools_add();
+
+				m_pGrid->applyAPstructures_toGrid();
 			}
 			else
 			{
@@ -161,7 +177,7 @@ void CAtomicVoxel::move(int dx, int dy)
 		}
 	}
 
-	addPointersToDataStructure();
+	addStructure_toGrid();
 }
 
 
@@ -185,7 +201,9 @@ bool CAtomicVoxel::canMove_x(int dx)
 	{
 		bool tempBool = m_childrenAV[i]->canMove_x(dx);
 		if (tempBool == false || selfMove == false)
+		{
 			canMove = false;
+		}
 	}
 	return canMove;
 }
@@ -211,7 +229,9 @@ bool CAtomicVoxel::canMove_y(int dy)
 	{
 		bool tempBool = m_childrenAV[i]->canMove_y(dy);
 		if (tempBool == false || selfMove == false)
+		{
 			canMove = false;
+		}
 
 	}
 	return canMove;
@@ -391,6 +411,66 @@ void CAtomicVoxel::chooseImageBasedOnEdge()
 }
 
 
+void CAtomicVoxel::setEdgeBools_add()
+{
+	if (m_isEdge.up)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x, m_gridPos.y - 1);
+		if (neighbor != NULL)
+		{
+			m_isEdge.up = false;
+			neighbor->m_isEdge.down = false;
+
+			chooseImageBasedOnEdge();
+			neighbor->chooseImageBasedOnEdge();
+		}
+	}
+	if (m_isEdge.down)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x, m_gridPos.y + 1);
+		if (neighbor != NULL)
+		{
+			m_isEdge.down = false;
+			neighbor->m_isEdge.up = false;
+
+			chooseImageBasedOnEdge();
+			neighbor->chooseImageBasedOnEdge();
+		}
+	}
+
+	if (m_isEdge.left)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x - 1, m_gridPos.y);
+		if (neighbor != NULL)
+		{
+			m_isEdge.left = false;
+			neighbor->m_isEdge.right = false;
+
+			chooseImageBasedOnEdge();
+			neighbor->chooseImageBasedOnEdge();
+		}
+	}
+	if (m_isEdge.right)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x + 1, m_gridPos.y);
+		if (neighbor != NULL)
+		{
+			m_isEdge.right = false;
+			neighbor->m_isEdge.left = false;
+
+			chooseImageBasedOnEdge();
+			neighbor->chooseImageBasedOnEdge();
+		}
+	}
+
+	// children
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV[i]->setEdgeBools_add();
+	}
+}
+
+
 void CAtomicVoxel::setScreenPos()
 {
 	m_screenPos = m_gridPos;
@@ -399,23 +479,27 @@ void CAtomicVoxel::setScreenPos()
 }
 
 
-void CAtomicVoxel::removePointersFromDataStructure()
+void CAtomicVoxel::removeStructure_fromGrid()
 {
 	m_pGrid->setPos(m_gridPos, NULL);
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
-		m_childrenAV[i]->removePointersFromDataStructure();
+		m_childrenAV[i]->removeStructure_fromGrid();
 	}
+
+	isStructureRemoved = true;
 }
 
 
-void CAtomicVoxel::addPointersToDataStructure()
+void CAtomicVoxel::addStructure_toGrid()
 {
 	m_pGrid->setPos(m_gridPos, this);
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
-		m_childrenAV[i]->addPointersToDataStructure();
+		m_childrenAV[i]->addStructure_toGrid();
 	}
+
+	isStructureRemoved = false;
 }
 
 
@@ -435,21 +519,7 @@ bool CAtomicVoxel::isCollisionDetected_x(int dx)
 
 		m_pGrid->removeAnchorParent(otherAP);
 
-		removePointersFromDataStructure();
-
-		// update on edge conditions and choose image
-		if (dx > 0) // moving right
-		{
-			m_isEdge.right = false;
-			possibleAV->m_isEdge.left = false;
-		}
-		else if (dx < 0) // moving left
-		{
-			m_isEdge.left = false;
-			possibleAV->m_isEdge.right = false;
-		}
-		chooseImageBasedOnEdge();
-		possibleAV->chooseImageBasedOnEdge();
+		removeStructure_fromGrid();
 
 		isCollision = true;
 		isBound = true;
@@ -459,7 +529,9 @@ bool CAtomicVoxel::isCollisionDetected_x(int dx)
 	{
 		bool tempBool = m_childrenAV[i]->isCollisionDetected_x(dx);
 		if (tempBool == true || isBound == true)
+		{
 			isCollision = true;
+		}
 	}
 
 	return isCollision;
@@ -482,21 +554,7 @@ bool CAtomicVoxel::isCollisionDetected_y(int dy)
 
 		m_pGrid->removeAnchorParent(otherAP);
 
-		removePointersFromDataStructure();
-
-		// update on edge conditions and choose image
-		if (dy > 0) // moving down
-		{
-			m_isEdge.down = false;
-			possibleAV->m_isEdge.up = false;
-		}
-		else if (dy < 0) // moving up
-		{
-			m_isEdge.up = false;
-			possibleAV->m_isEdge.down= false;
-		}
-		chooseImageBasedOnEdge();
-		possibleAV->chooseImageBasedOnEdge();
+		removeStructure_fromGrid();
 
 		isCollision = true;
 		isBound = true;
@@ -506,7 +564,9 @@ bool CAtomicVoxel::isCollisionDetected_y(int dy)
 	{
 		bool tempBool = m_childrenAV[i]->isCollisionDetected_y(dy);
 		if (tempBool == true || isBound == true)
+		{
 			isCollision = true;
+		}
 	}
 
 	return isCollision;

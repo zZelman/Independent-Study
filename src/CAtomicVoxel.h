@@ -85,6 +85,12 @@ public:
 	// does not delete this AV, but makes this AV a AP
 	void damage_breakParentBond();
 
+	// removes this structure's AV pointers from the 2D Grid
+	void removeStructure_fromGrid();
+
+	// re-adds this structure's AV pointers to the 2D grid
+	void addStructure_toGrid();
+
 private:
 	// tree data-structure that each AV-structure must abide by
 	//		1 - [] - n
@@ -104,19 +110,18 @@ private:
 	CTexture* m_pTexture;
 	CSprite* m_pSprite;
 
+	bool isStructureRemoved; // keep Track of what state the structure is in
+
 	// hard coded edge conditions to choose an image corresponding to the current
 	//		edge conditions
 	void chooseImageBasedOnEdge();
 
+	// checks the 4 coords around the addedAV and then sets the edges accordingly
+	void setEdgeBools_add();
+
 	// * update the screen position based on the grid position
 	// * also updates the m_pSprite
 	void setScreenPos();
-
-	// removes this structure's AV pointers from the 2D Grid
-	void removePointersFromDataStructure();
-
-	// re-adds this structure's AV pointers to the 2D grid
-	void addPointersToDataStructure();
 
 	// decompositions of the move function
 	void move_x(int dx);

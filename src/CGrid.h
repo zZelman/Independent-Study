@@ -74,9 +74,20 @@ public:
 	// creates a new AP @ screen pos IF one isnt already there
 	void createAP(sf::Vector2<int>* screenPos);
 
+	// finds the AP @ screen pos scructure IF a AV exists there
+	//		then sets the m_pTestAV equal to it
+	void focusAP(sf::Vector2<int>* screenPos);
+
 	// sets a pointer to NULL within the 2D grid data structure
 	void removeAV(int x, int y);
 	void removeAV(const sf::Vector2<int>& pos);
+
+	// * methods to remove everything on the 2D array to provide the
+	//		functionality that there is only 1 structure on the 2D data structure
+	// * this does not cause a memory leak because AP are maintained within the AP vector
+	void nullALL_onGrid();
+	void applyAPstructures_toGrid();
+
 
 	// debug
 	void printDataStructure();
@@ -98,6 +109,8 @@ private:
 
 	sf::Vector2<int> m_gridSize; // total number of cells in (width, height)
 	sf::Vector2<int> m_gridSubSize; // pixel size of an individual cell
+
+	bool isDataStructureNULL; // keep track what state the data structure is in
 
 };
 
