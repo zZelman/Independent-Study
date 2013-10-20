@@ -74,7 +74,7 @@ src/CGrid.d: ../src/CGrid.cpp ../src/CGrid.h ../src/include_sfml.h \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
  ../src/CAtomicVoxel.h ../src/CTexture.h ../src/CSprite.h \
- ../src/IRenderable.h ../src/IUpdateable.h
+ ../src/IRenderable.h ../src/IUpdateable.h ../src/IUserInput.h
 
 ../src/CGrid.h:
 
@@ -237,3 +237,5 @@ src/CGrid.d: ../src/CGrid.cpp ../src/CGrid.h ../src/include_sfml.h \
 ../src/IRenderable.h:
 
 ../src/IUpdateable.h:
+
+../src/IUserInput.h:

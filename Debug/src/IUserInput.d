@@ -1,4 +1,5 @@
-src/CGame.d: ../src/CGame.cpp ../src/CGame.h ../src/include_sfml.h \
+src/IUserInput.d: ../src/IUserInput.cpp ../src/IUserInput.h \
+ ../src/include_sfml.h \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Window.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/System.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Config.hpp \
@@ -72,11 +73,9 @@ src/CGame.d: ../src/CGame.cpp ../src/CGame.h ../src/include_sfml.h \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/Sound.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBuffer.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
- /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
- ../src/CSprite.h ../src/CTexture.h ../src/IRenderable.h ../src/CGrid.h \
- ../src/CAtomicVoxel.h ../src/IUpdateable.h ../src/IUserInput.h
+ /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp
 
-../src/CGame.h:
+../src/IUserInput.h:
 
 ../src/include_sfml.h:
 
@@ -227,17 +226,3 @@ src/CGame.d: ../src/CGame.cpp ../src/CGame.h ../src/include_sfml.h \
 /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp:
 
 /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp:
-
-../src/CSprite.h:
-
-../src/CTexture.h:
-
-../src/IRenderable.h:
-
-../src/CGrid.h:
-
-../src/CAtomicVoxel.h:
-
-../src/IUpdateable.h:
-
-../src/IUserInput.h:

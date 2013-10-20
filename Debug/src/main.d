@@ -74,7 +74,7 @@ src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
  ../src/CSprite.h ../src/CTexture.h ../src/IRenderable.h ../src/CGrid.h \
- ../src/CAtomicVoxel.h ../src/IUpdateable.h
+ ../src/CAtomicVoxel.h ../src/IUpdateable.h ../src/IUserInput.h
 
 ../src/CGame.h:
 
@@ -239,3 +239,5 @@ src/main.d: ../src/main.cpp ../src/CGame.h ../src/include_sfml.h \
 ../src/CAtomicVoxel.h:
 
 ../src/IUpdateable.h:
+
+../src/IUserInput.h:

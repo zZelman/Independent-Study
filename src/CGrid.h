@@ -15,11 +15,12 @@
 #include "CSprite.h"
 #include "IUpdateable.h"
 #include "IRenderable.h"
+#include "IUserInput.h"
 
 class CAtomicVoxel;
 
 // this class represents the 2D grid that ALL atomic voxels are within
-class CGrid : public IUpdateable, public IRenderable
+class CGrid : public IUpdateable, public IRenderable, public IUserInput
 {
 public:
 	CGrid();
@@ -36,7 +37,11 @@ public:
 
 	sf::Vector2<int> getGridSize();
 
-	bool userInput(sf::Event* pEvent);
+	bool userInput_keyPress(sf::Event* pEvent);
+	bool userInput_keyRelease(sf::Event* pEvent);
+
+	bool userInput_mousePress(sf::Event* pEvent);
+	bool userInput_mouseRelease(sf::Event* pEvent);
 
 	void update();
 	void render();

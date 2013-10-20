@@ -74,14 +74,15 @@ public:
 	// adds the given AV to the children of this AV
 	void bindAVasChild(CAtomicVoxel* AV);
 
+	// removes the given pointer from the children vector
+	void removeChild(CAtomicVoxel* AV);
+
 	// 3 different options to deal with what damage to this AV does
 
 	// deletes this AV and makes all of its children an AP
 	void damage_remove();
-
 	// does not delete this AV, but does make children APs
 	void damage_breakChildBond();
-
 	// does not delete this AV, but makes this AV a AP
 	void damage_breakParentBond();
 
@@ -90,6 +91,10 @@ public:
 
 	// re-adds this structure's AV pointers to the 2D grid
 	void addStructure_toGrid();
+
+	// re-addresses the edge conditions for the ENTIRE structure that his AV is in
+	void setEdgeBools_add();
+	void setEdgeBools_remove();
 
 private:
 	// tree data-structure that each AV-structure must abide by
@@ -116,8 +121,12 @@ private:
 	//		edge conditions
 	void chooseImageBasedOnEdge();
 
-	// checks the 4 coords around the addedAV and then sets the edges accordingly
-	void setEdgeBools_add();
+	// * checks the 4 coords around the addedAV and then sets the edges accordingly
+	// * the "sub" stands for: being called by setEdgeBools_add()
+	//		this is necessary because I don't want the children of this (and all subsequent)
+	//		to do repetitive things ---> increase effichancy
+	void setEdgeBools_add_sub();
+	void setEdgeBools_remove_sub(); // same comment applies (above), in respect to "remove"
 
 	// * update the screen position based on the grid position
 	// * also updates the m_pSprite

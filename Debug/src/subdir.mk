@@ -11,6 +11,7 @@ CPP_SRCS += \
 ../src/CTexture.cpp \
 ../src/IRenderable.cpp \
 ../src/IUpdateable.cpp \
+../src/IUserInput.cpp \
 ../src/main.cpp 
 
 OBJS += \
@@ -21,6 +22,7 @@ OBJS += \
 ./src/CTexture.o \
 ./src/IRenderable.o \
 ./src/IUpdateable.o \
+./src/IUserInput.o \
 ./src/main.o 
 
 CPP_DEPS += \
@@ -31,6 +33,7 @@ CPP_DEPS += \
 ./src/CTexture.d \
 ./src/IRenderable.d \
 ./src/IUpdateable.d \
+./src/IUserInput.d \
 ./src/main.d 
 
 

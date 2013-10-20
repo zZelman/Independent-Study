@@ -75,7 +75,7 @@ src/CAtomicVoxel.d: ../src/CAtomicVoxel.cpp ../src/CAtomicVoxel.h \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundBufferRecorder.hpp \
  /home/zZelman/Dropbox/Independent-Study/SFML-2.1/include/SFML/Audio/SoundRecorder.hpp \
  ../src/CGrid.h ../src/CTexture.h ../src/CSprite.h ../src/IRenderable.h \
- ../src/IUpdateable.h
+ ../src/IUpdateable.h ../src/IUserInput.h
 
 ../src/CAtomicVoxel.h:
 
@@ -238,3 +238,5 @@ src/CAtomicVoxel.d: ../src/CAtomicVoxel.cpp ../src/CAtomicVoxel.h \
 ../src/IRenderable.h:
 
 ../src/IUpdateable.h:
+
+../src/IUserInput.h:

@@ -143,12 +143,7 @@ void CAtomicVoxel::move(int dx, int dy)
 		{
 			if (isCollisionDetected_x(dx) == true)
 			{
-				m_pGrid->nullALL_onGrid();
-
-				addStructure_toGrid();
 				setEdgeBools_add();
-
-				m_pGrid->applyAPstructures_toGrid();
 			}
 			else
 			{
@@ -163,12 +158,7 @@ void CAtomicVoxel::move(int dx, int dy)
 		{
 			if (isCollisionDetected_y(dy) == true)
 			{
-				m_pGrid->nullALL_onGrid();
-
-				addStructure_toGrid();
 				setEdgeBools_add();
-
-				m_pGrid->applyAPstructures_toGrid();
 			}
 			else
 			{
@@ -296,10 +286,69 @@ void CAtomicVoxel::bindAVasChild(CAtomicVoxel* AV)
 }
 
 
+void CAtomicVoxel::removeChild(CAtomicVoxel* AV)
+{
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		if (m_childrenAV[i] == AV)
+		{
+			m_childrenAV.erase(m_childrenAV.begin() + i);
+			return;
+		}
+	}
+
+	// code flow should never get here
+	bool removeChild = false;
+	assert(removeChild);
+}
+
+
 void CAtomicVoxel::damage_remove()
 {
-	// TODO
+	if (m_pParentAV == NULL)
+	{
+		m_pGrid->removeAnchorParent(this);
+	}
 
+	if (m_pParentAV != NULL)
+	{
+		// remove this as a child of parent
+		m_pParentAV->removeChild(this);
+
+		// tell parent to re-check edge conditions
+		m_pParentAV->findAnchorParent()->setEdgeBools_remove();
+
+		// set parent to null in this
+		m_pParentAV = NULL;
+
+	}
+
+	// for (each child)
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		CAtomicVoxel* child = m_childrenAV[i];
+
+		// set parent to null
+		child->m_pParentAV = NULL;
+
+		// add to anchor parents in CGrid
+		child->m_pGrid->addAnchorParent(child);
+
+		// re-check edge conditions
+		child->setEdgeBools_remove();
+	}
+
+	// remove all children from this
+	m_childrenAV.clear();
+
+	// remove this from the 2D data structure
+	m_pGrid->setPos(m_gridPos, NULL);
+
+	// remove this from CGrid anchor parents
+//	m_pGrid->removeAnchorParent(this);
+	// this is already accomplished somewhere...?
+
+	// delete this (in calling function)
 }
 
 
@@ -411,7 +460,7 @@ void CAtomicVoxel::chooseImageBasedOnEdge()
 }
 
 
-void CAtomicVoxel::setEdgeBools_add()
+void CAtomicVoxel::setEdgeBools_add_sub()
 {
 	if (m_isEdge.up)
 	{
@@ -466,7 +515,53 @@ void CAtomicVoxel::setEdgeBools_add()
 	// children
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
-		m_childrenAV[i]->setEdgeBools_add();
+		m_childrenAV[i]->setEdgeBools_add_sub();
+	}
+}
+
+
+void CAtomicVoxel::setEdgeBools_remove_sub()
+{
+	if (!m_isEdge.up)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x, m_gridPos.y - 1);
+		if (neighbor == NULL)
+		{
+			m_isEdge.up = true;
+		}
+	}
+	if (!m_isEdge.down)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x, m_gridPos.y + 1);
+		if (neighbor == NULL)
+		{
+			m_isEdge.down = true;
+		}
+	}
+
+	if (!m_isEdge.left)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x - 1, m_gridPos.y);
+		if (neighbor == NULL)
+		{
+			m_isEdge.left = true;
+		}
+	}
+	if (!m_isEdge.right)
+	{
+		CAtomicVoxel* neighbor = m_pGrid->returnPos(m_gridPos.x + 1, m_gridPos.y);
+		if (neighbor == NULL)
+		{
+			m_isEdge.right = true;
+		}
+	}
+
+	chooseImageBasedOnEdge();
+
+	// children
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV[i]->setEdgeBools_remove_sub();
 	}
 }
 
@@ -500,6 +595,28 @@ void CAtomicVoxel::addStructure_toGrid()
 	}
 
 	isStructureRemoved = false;
+}
+
+
+void CAtomicVoxel::setEdgeBools_add()
+{
+	m_pGrid->nullALL_onGrid();
+
+	findAnchorParent()->addStructure_toGrid();
+	setEdgeBools_add_sub();
+
+	m_pGrid->applyAPstructures_toGrid();
+}
+
+
+void CAtomicVoxel::setEdgeBools_remove()
+{
+	m_pGrid->nullALL_onGrid();
+
+	findAnchorParent()->addStructure_toGrid();
+	setEdgeBools_remove_sub();
+
+	m_pGrid->applyAPstructures_toGrid();
 }
 
 

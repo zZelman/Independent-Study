@@ -151,57 +151,112 @@ sf::Vector2<int> CGrid::getGridSize()
 }
 
 
-bool CGrid::userInput(sf::Event* pEvent)
+bool CGrid::userInput_keyPress(sf::Event* pEvent)
 {
-	bool isConsumed = false;
+	switch (pEvent->key.code)
+	{
+		// arrow keys
+	case sf::Keyboard::Left:
+		{
+			if (m_pTestAV == NULL)
+				break;
+			m_pTestAV->move(-1, 0);
+			return true;
+			break;
+		}
+	case sf::Keyboard::Right:
+		{
+			if (m_pTestAV == NULL)
+				break;
+			m_pTestAV->move(1, 0);
+			return true;
+			break;
+		}
+	case sf::Keyboard::Up:
+		{
+			if (m_pTestAV == NULL)
+				break;
+			m_pTestAV->move(0, -1);
+			return true;
+			break;
+		}
+	case sf::Keyboard::Down:
+		{
+			if (m_pTestAV == NULL)
+				break;
+			m_pTestAV->move(0, 1);
+			return true;
+			break;
+		}
 
-	// arrow keys
-	if (pEvent->key.code == sf::Keyboard::Left)
-	{
-		m_pTestAV->move(-1, 0);
-		isConsumed = true;
-	}
-	else if (pEvent->key.code == sf::Keyboard::Right)
-	{
-		m_pTestAV->move(1, 0);
-		isConsumed = true;
-	}
-	else if (pEvent->key.code == sf::Keyboard::Up)
-	{
-		m_pTestAV->move(0, -1);
-		isConsumed = true;
-	}
-	else if (pEvent->key.code == sf::Keyboard::Down)
-	{
-		m_pTestAV->move(0, 1);
-		isConsumed = true;
+		// focus the AV structure where the mouse is at
+	case sf::Keyboard::Space:
+		{
+			sf::Vector2<int> pos = sf::Mouse::getPosition(*m_pScreen);
+			focusAP(&pos);
+			return true;
+			break;
+		}
+
+		// debug printing
+	case sf::Keyboard::P:
+		{
+			printDataStructure();
+			return true;
+			break;
+		}
+
+	default:
+		break;
 	}
 
+	return false;
+}
 
-	// left mouse
-	if (pEvent->mouseButton.button == sf::Mouse::Left)
+
+bool CGrid::userInput_keyRelease(sf::Event* pEvent)
+{
+	return false;
+}
+
+
+bool CGrid::userInput_mousePress(sf::Event* pEvent)
+{
+	switch (pEvent->mouseButton.button)
 	{
-		sf::Vector2<int> pos = sf::Mouse::getPosition(*m_pScreen);
-		createAP(&pos);
-		isConsumed = true;
+	case sf::Mouse::Left:
+		{
+			sf::Vector2<int> pos = sf::Mouse::getPosition(*m_pScreen);
+			createAP(&pos);
+			return true;
+			break;
+		}
+	case sf::Mouse::Right:
+		{
+			sf::Vector2<int> pos = sf::Mouse::getPosition(*m_pScreen);
+			screenToGrid(&pos);
+			CAtomicVoxel* targetedAV = returnPos(pos);
+			if (targetedAV != NULL)
+			{
+				targetedAV->damage_remove();
+				if (targetedAV == m_pTestAV)
+					m_pTestAV = NULL;
+				delete targetedAV;
+			}
+			break;
+		}
+
+	default:
+		break;
 	}
 
-	// key p
-	if (pEvent->key.code == sf::Keyboard::P)
-	{
-		printDataStructure();
-		isConsumed = true;
-	}
+	return false;
+}
 
-	// shift focus to another Structure
-	if (pEvent->key.code == sf::Keyboard::Space)
-	{
-		sf::Vector2<int> pos = sf::Mouse::getPosition(*m_pScreen);
-		focusAP(&pos);
-		isConsumed = true;
-	}
 
-	return isConsumed;
+bool CGrid::userInput_mouseRelease(sf::Event* pEvent)
+{
+	return false;
 }
 
 
@@ -214,11 +269,12 @@ void CGrid::render()
 {
 	for (int i = 0; i < (m_gridSize.y * m_gridSize.x); ++i)
 	{
-		if (m_gridDataStructure[i] == NULL)
+		CAtomicVoxel* av = m_gridDataStructure[i];
+		if (av == NULL)
 		{
 			continue;
 		}
-		m_gridDataStructure[i]->render();
+		av->render();
 	}
 }
 
@@ -390,6 +446,7 @@ void CGrid::applyAPstructures_toGrid()
 void CGrid::printDataStructure()
 {
 	std::cout << "----" << std::endl;
+	std::cout << "AP size: " << m_anchorParents.size() << std::endl;
 	for (int i = 0; i < m_gridSize.y; ++i)
 	{
 		for (int n = 0; n < m_gridSize.x; ++n)

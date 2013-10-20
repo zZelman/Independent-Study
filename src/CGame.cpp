@@ -170,68 +170,39 @@ void CGame::gameLoop()
 bool CGame::input_user(sf::Event* pEvent)
 {
 
-	// keyboard key-press DOWN
-	if (pEvent->type == sf::Event::KeyPressed)
+	// keyboard
+	if (pEvent->type == sf::Event::KeyPressed) // press
 	{
-		switch (pEvent->key.code)
+		if (pEvent->key.code == sf::Keyboard::Escape)
 		{
-		case sf::Keyboard::Escape:
 			m_pGameWindow->close();
 			return true;
-			break;
-		default:
-			break;
 		}
 
-		if (pEvent->key.code == sf::Keyboard::Left ||
-		        pEvent->key.code == sf::Keyboard::Right ||
-		        pEvent->key.code == sf::Keyboard::Up ||
-		        pEvent->key.code == sf::Keyboard::Down)
+		if (m_pGrid->userInput_keyPress(pEvent) == true)
 		{
-			m_pGrid->userInput(pEvent);
+			return true;
 		}
-		if (pEvent->key.code == sf::Keyboard::P)
-		{
-			m_pGrid->userInput(pEvent);
-		}
-		if (pEvent->key.code == sf::Keyboard::Space)
-		{
-			m_pGrid->userInput(pEvent);
-		}
+
 	}
-	else if (pEvent->type == sf::Event::KeyReleased)
+	else if (pEvent->type == sf::Event::KeyReleased) // release
 	{
-		switch (pEvent->key.code)
+		if (m_pGrid->userInput_keyRelease(pEvent) == true)
 		{
-		case sf::Keyboard::Escape:
-			m_pGameWindow->close();
 			return true;
-			break;
-		default:
-			break;
-		}
-
-		if (pEvent->key.code == sf::Keyboard::Left ||
-		        pEvent->key.code == sf::Keyboard::Right ||
-		        pEvent->key.code == sf::Keyboard::Up ||
-		        pEvent->key.code == sf::Keyboard::Down)
-		{
 		}
 	}
 
-
-	// user pressed a mouse button within the game
-	if (pEvent->type == sf::Event::MouseButtonPressed)
+	// mouse
+	if (pEvent->type == sf::Event::MouseButtonPressed) // press
 	{
-		if (pEvent->mouseButton.button == sf::Mouse::Right)
-		{
+		if (m_pGrid->userInput_mousePress(pEvent) == true)
 			return true;
-		}
-		if (pEvent->mouseButton.button == sf::Mouse::Left)
-		{
-			m_pGrid->userInput(pEvent);
+	}
+	else if (pEvent->type == sf::Event::MouseButtonReleased) // release
+	{
+		if (m_pGrid->userInput_mouseRelease(pEvent) == true)
 			return true;
-		}
 	}
 
 	return false;
