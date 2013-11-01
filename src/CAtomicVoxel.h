@@ -15,7 +15,9 @@
 #include "CSprite.h"
 #include "IUpdateable.h"
 
+
 class CGrid;
+
 
 struct SEdgeBools
 {
@@ -32,6 +34,7 @@ struct SEdgeBools
 	}
 };
 
+
 class CAtomicVoxel : public IUpdateable, public IRenderable
 {
 public:
@@ -45,6 +48,12 @@ public:
 	virtual ~CAtomicVoxel();
 
 	CAtomicVoxel& operator=(const CAtomicVoxel& other);
+
+	// returns the point representation of this AV's screen center
+	const sf::Vector2<float>& getCenter();
+	std::vector<CAtomicVoxel*>& getChildren();
+
+	bool isAnchorParent();
 
 	// access method for sprite
 	void setSpriteScreenPos(int x, int y);
@@ -95,6 +104,8 @@ public:
 	// re-addresses the edge conditions for the ENTIRE structure that his AV is in
 	void setEdgeBools_add();
 	void setEdgeBools_remove();
+
+	void updateCenter(); // updates m_selfCenter's values to reflect where the AV is currently
 
 private:
 	// tree data-structure that each AV-structure must abide by
@@ -147,6 +158,9 @@ private:
 	// * checks with FUTURE movement, does not move this AV
 	bool isCollisionDetected_x(int dx);
 	bool isCollisionDetected_y(int dy);
+
+	// The graphical display of the bonds between AV
+	sf::Vector2<float> m_selfCenter; // screen cords of self's center
 };
 
 

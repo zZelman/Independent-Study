@@ -15,7 +15,6 @@ CSprite::CSprite()
 {
 	m_pWindow = NULL;
 	m_pTexture = NULL;
-//	m_pSprite = NULL;
 }
 
 
@@ -27,8 +26,6 @@ CSprite::CSprite(sf::RenderWindow* pWindow,
 
 	m_pTexture = pTexture;
 
-//	m_pSprite = new sf::Sprite();
-//	m_pSprite->setTexture(*(m_pTexture->getTexture()));
 	setTexture(*m_pTexture);
 
 	m_currSub = currSub;
@@ -39,14 +36,10 @@ CSprite::CSprite(sf::RenderWindow* pWindow,
 
 CSprite::~CSprite()
 {
-//	delete m_pSprite;
-//	m_pSprite = NULL;
-
-	// m_pWindow && m_pTexture are managed externally
 }
 
 
-CSprite::CSprite(const CSprite& other)
+CSprite::CSprite(const CSprite& other) : Sprite(other)
 {
 	// [QUESTION] if a pointer is managed externally, do you need to allocate
 	//		a 'new' in a copy constructor/copy assignment?
@@ -54,42 +47,7 @@ CSprite::CSprite(const CSprite& other)
 	m_pWindow = other.m_pWindow; // managed externally
 
 	m_pTexture = other.m_pTexture; // managed externally
-
-//	m_pSprite = new sf::Sprite();
-//	*m_pSprite = *(other.m_pSprite);
 }
-
-
-CSprite& CSprite::operator=(const CSprite& other)
-{
-	if (this == &other)
-	{
-		return *this;
-	}
-
-	// [QUESTION] if a pointer is managed externally, do you need to allocate
-	//		a 'new' in a copy constructor/copy assignment?
-
-	m_pWindow = other.m_pWindow; // managed externally
-
-	m_pTexture = other.m_pTexture; // managed externally
-
-	// [QUESTION] should i conditionally delete?
-//	if (m_pSprite != NULL)
-//	{
-//		delete m_pSprite;
-//	}
-//	m_pSprite = new sf::Sprite();
-//	*m_pSprite = *(other.m_pSprite);
-
-	return *this;
-}
-
-
-//sf::FloatRect CSprite::getRect()
-//{
-//	return m_pSprite->getGlobalBounds();
-//}
 
 
 void CSprite::setSubImage(int col, int row)
@@ -111,16 +69,8 @@ void CSprite::setSubImage(const sf::Vector2<int>* newSub)
 	int row = newSub->y;
 
 #ifdef DEBUG
-	if (!(col <= m_pTexture->getSubNum().x && col > 0))
-	{
-		int i = 0;
-	}
 	assert(col <= m_pTexture->getSubNum().x && col > 0);
 
-	if (!(row <= m_pTexture->getSubNum().y && row > 0))
-	{
-		int i = 0;
-	}
 	assert(row <= m_pTexture->getSubNum().y && row > 0);
 #endif
 	m_currSub.x = col;
@@ -128,48 +78,6 @@ void CSprite::setSubImage(const sf::Vector2<int>* newSub)
 
 	chooseSubImage();
 }
-
-
-//void CSprite::setPosition(float x, float y)
-//{
-//	m_pSprite->setPosition(x, y);
-//}
-
-
-//void CSprite::setPosition(const sf::Vector2<int>& pos)
-//{
-//	setPosition(pos.x, pos.y);
-//}
-
-
-//void CSprite::setScale(float x, float y)
-//{
-//	m_pSprite->setScale(x, y);
-//}
-
-
-//void CSprite::setScale(const sf::Vector2<float>* scale)
-//{
-//	m_pSprite->setScale(*scale);
-//}
-
-
-//void CSprite::scale(float x, float y)
-//{
-//	m_pSprite->scale(x, y);
-//}
-
-
-//void CSprite::scale(const sf::Vector2<float>* scale)
-//{
-//	m_pSprite->scale(*scale);
-//}
-
-
-//void CSprite::move(float x, float y)
-//{
-//	m_pSprite->move(x, y);
-//}
 
 
 void CSprite::render()

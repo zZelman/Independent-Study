@@ -35,7 +35,8 @@ public:
 
 	CGrid& operator=(const CGrid& other);
 
-	sf::Vector2<int> getGridSize();
+	const sf::Vector2<int>& getGridSize();
+	const sf::Vector2<int>& getGridSubSize();
 
 	bool userInput_keyPress(sf::Event* pEvent);
 	bool userInput_keyRelease(sf::Event* pEvent);
@@ -116,6 +117,8 @@ private:
 	sf::Vector2<int> m_gridSubSize; // pixel size of an individual cell
 
 	bool isDataStructureNULL; // keep track what state the data structure is in
+
+	void renderBonds();
 
 };
 

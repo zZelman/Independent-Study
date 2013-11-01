@@ -10,9 +10,9 @@
 #include <assert.h>
 
 
-CTexture::CTexture()
+CTexture::CTexture() : Texture()
 {
-//	m_pTexture = NULL;
+
 }
 
 
@@ -24,24 +24,12 @@ CTexture::CTexture(std::string fileName,
 
 	m_subNum = subNum;
 
-//	m_pTexture = new sf::Texture();
-
 	load(fileName);
 }
 
 
-CTexture::~CTexture()
+CTexture::CTexture(const CTexture& other) : Texture(other)
 {
-//	delete m_pTexture;
-//	m_pTexture = NULL;
-}
-
-
-CTexture::CTexture(const CTexture& other)
-{
-//	m_pTexture = new sf::Texture();
-//	*m_pTexture = *(other.m_pTexture);
-
 	m_subSize = other.m_subSize;
 
 	m_subNum = other.m_subNum;
@@ -55,12 +43,7 @@ CTexture& CTexture::operator=(const CTexture& other)
 		return *this;
 	}
 
-//	if (m_pTexture != NULL)
-//	{
-//		delete m_pTexture;
-//	}
-//	m_pTexture = new sf::Texture();
-//	*m_pTexture = *(other.m_pTexture);
+	sf::Texture::operator =(other);
 
 	m_subSize = other.m_subSize;
 
@@ -70,29 +53,13 @@ CTexture& CTexture::operator=(const CTexture& other)
 }
 
 
-//sf::Texture* CTexture::getTexture() const
-//{
-//	return m_pTexture;
-//}
-
-
-//void CTexture::setTexture(sf::Texture* texture)
-//{
-//	if (m_pTexture != NULL)
-//	{
-//		delete m_pTexture;
-//	}
-//	m_pTexture = texture;
-//}
-
-
-sf::Vector2<int> CTexture::getSubNum() const
+const sf::Vector2<int>& CTexture::getSubNum() const
 {
 	return m_subNum;
 }
 
 
-sf::Vector2<int> CTexture::getSubSize() const
+const sf::Vector2<int>& CTexture::getSubSize() const
 {
 	return m_subSize;
 }
@@ -100,13 +67,6 @@ sf::Vector2<int> CTexture::getSubSize() const
 
 void CTexture::load(std::string fileName)
 {
-//	bool isLoaded = m_pTexture->loadFromFile(fileName);
-//#ifdef DEBUG
-//	assert(isLoaded);
-//#endif
-//	m_pTexture->setSmooth(true);
-//	m_pTexture->setRepeated(false);
-
 	bool isLoaded = loadFromFile(fileName);
 #ifdef DEBUG
 	assert(isLoaded);

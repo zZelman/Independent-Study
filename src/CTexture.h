@@ -17,32 +17,22 @@ public:
 	CTexture(std::string fileName,		// Relative path to the texture image
 	         sf::Vector2<int> subSize,	// LENGTH sub-image height/width
 	         sf::Vector2<int> subNum);	// LENGTH number of sub images
-	~CTexture();
 	CTexture(const CTexture& other);
 
 	CTexture& operator=(const CTexture& other);
 
-	// whole image represented with a texture
-//	sf::Texture* getTexture() const;
-
-	// whole image represented with a texture
-//	void setTexture(sf::Texture* texture);
-
 	// * LENGTH number of sub-section images on the texture
 	// * x = cols; y = rows
-	sf::Vector2<int> getSubNum() const;
+	const sf::Vector2<int>& getSubNum() const;
 
 	// * LENGTH height/width of the sub-section images on the texture
 	// * x = width; y = height
-	sf::Vector2<int> getSubSize() const;
+	const sf::Vector2<int>& getSubSize() const;
 
 	void load(std::string fileName);	// Relative path to the texture image
 
 
 private:
-	// whole image represented with a texture
-//	sf::Texture* m_pTexture;
-
 	// * LENGTH height/width of the sub-section images on the texture
 	// * x = width; y = height
 	sf::Vector2<int> m_subSize;

@@ -255,9 +255,13 @@ void CGame::render()
 	// drawing here...
 	m_pGrid->render();
 
+//	static int posX = 10;
+//	static int posY = 10;
+//	posX += 1;
+//
 //	sf::Vertex line[] =
 //	{
-//			sf::Vertex(sf::Vector2f(10, 10), sf::Color::Blue),
+//			sf::Vertex(sf::Vector2f(posX, posY), sf::Color::Blue),
 //			sf::Vertex(sf::Vector2f(150, 150), sf::Color::Blue)
 //	};
 //

@@ -50,10 +50,8 @@ CGrid::CGrid(sf::RenderWindow* window,
 
 CGrid::~CGrid()
 {
-	delete m_pAVTexture;
-	m_pAVTexture = NULL;
-
 	delete m_pTestAV;
+	m_pTestAV = NULL;
 
 	// m_pScreen is managed externally
 
@@ -145,9 +143,15 @@ CGrid& CGrid::operator =(const CGrid& other)
 }
 
 
-sf::Vector2<int> CGrid::getGridSize()
+const sf::Vector2<int>& CGrid::getGridSize()
 {
 	return m_gridSize;
+}
+
+
+const sf::Vector2<int>& CGrid::getGridSubSize()
+{
+	return m_gridSubSize;
 }
 
 
@@ -285,6 +289,55 @@ void CGrid::render()
 			continue;
 		}
 		av->render();
+	}
+
+	renderBonds();
+}
+
+
+void CGrid::renderBonds()
+{
+	for (int i = 0; i < (m_gridSize.y * m_gridSize.x); ++i)
+	{
+		CAtomicVoxel* av = m_gridDataStructure[i];
+		if (av == NULL)
+		{
+			continue;
+		}
+
+		sf::Vector2<float> point1 = av->getCenter();
+		sf::Vertex v1 = sf::Vertex(point1, sf::Color::Blue);
+
+		sf::Vertex v2;
+		if (av->getChildren().size() == 0)
+		{
+			v2 = sf::Vertex(point1, sf::Color::Yellow);
+			sf::Vertex gBond[] = {v1, v2};
+
+			m_pScreen->draw(gBond, 2, sf::Lines);
+		}
+		else
+		{
+			for (uint n = 0; n < av->getChildren().size(); ++n)
+			{
+				sf::Vector2<float> point2 = av->getChildren().at(n)->getCenter();
+				v2 = sf::Vertex(point2, sf::Color::Yellow);
+
+				sf::Vertex gBond[] = {v1, v2};
+
+				m_pScreen->draw(gBond, 2, sf::Lines);
+			}
+		}
+
+		if (av->isAnchorParent())
+		{
+			float r = 3;
+			sf::CircleShape s(r);
+			s.setFillColor(sf::Color::Black);
+			s.setPosition(av->getCenter().x - r, av->getCenter().y - r);
+			m_pScreen->draw(s);
+		}
+
 	}
 }
 

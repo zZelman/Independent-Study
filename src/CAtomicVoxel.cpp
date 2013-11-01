@@ -46,6 +46,8 @@ CAtomicVoxel::CAtomicVoxel(CGrid* grid,
 	setScreenPos();
 	chooseImageBasedOnEdge();
 
+	updateCenter();
+
 	isStructureRemoved = false;
 }
 
@@ -62,6 +64,7 @@ CAtomicVoxel::~CAtomicVoxel()
 	// TODO
 	delete m_pSprite;
 	m_pSprite = NULL;
+
 }
 
 
@@ -75,6 +78,24 @@ CAtomicVoxel& CAtomicVoxel::operator =(const CAtomicVoxel& other)
 	// TODO
 
 	return *this;
+}
+
+
+const sf::Vector2<float>& CAtomicVoxel::getCenter()
+{
+	return m_selfCenter;
+}
+
+
+std::vector<CAtomicVoxel*>& CAtomicVoxel::getChildren()
+{
+	return m_childrenAV;
+}
+
+
+bool CAtomicVoxel::isAnchorParent()
+{
+	return m_pParentAV == NULL;
 }
 
 
@@ -237,6 +258,8 @@ void CAtomicVoxel::move_x(int dx)
 	{
 		m_childrenAV[i]->move_x(dx);
 	}
+
+	updateCenter();
 }
 
 
@@ -245,10 +268,13 @@ void CAtomicVoxel::move_y(int dy)
 	m_gridPos.y += dy;
 	setScreenPos();
 
+
 	for (uint i = 0; i < m_childrenAV.size(); ++i)
 	{
 		m_childrenAV[i]->move_y(dy);
 	}
+
+	updateCenter();
 }
 
 
@@ -687,4 +713,18 @@ bool CAtomicVoxel::isCollisionDetected_y(int dy)
 	}
 
 	return isCollision;
+}
+
+
+void CAtomicVoxel::updateCenter()
+{
+	sf::FloatRect curPos = m_pSprite->getGlobalBounds();
+
+	m_selfCenter.x = curPos.left + (curPos.width / 2);
+	m_selfCenter.y = curPos.top + (curPos.height / 2);
+
+	for (uint i = 0; i < m_childrenAV.size(); ++i)
+	{
+		m_childrenAV.at(i)->updateCenter();
+	}
 }
