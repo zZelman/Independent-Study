@@ -12,7 +12,7 @@
 
 CTexture::CTexture()
 {
-	m_pTexture = NULL;
+//	m_pTexture = NULL;
 }
 
 
@@ -24,7 +24,7 @@ CTexture::CTexture(std::string fileName,
 
 	m_subNum = subNum;
 
-	m_pTexture = new sf::Texture();
+//	m_pTexture = new sf::Texture();
 
 	load(fileName);
 }
@@ -32,15 +32,15 @@ CTexture::CTexture(std::string fileName,
 
 CTexture::~CTexture()
 {
-	delete m_pTexture;
-	m_pTexture = NULL;
+//	delete m_pTexture;
+//	m_pTexture = NULL;
 }
 
 
 CTexture::CTexture(const CTexture& other)
 {
-	m_pTexture = new sf::Texture();
-	*m_pTexture = *(other.m_pTexture);
+//	m_pTexture = new sf::Texture();
+//	*m_pTexture = *(other.m_pTexture);
 
 	m_subSize = other.m_subSize;
 
@@ -55,12 +55,12 @@ CTexture& CTexture::operator=(const CTexture& other)
 		return *this;
 	}
 
-	if (m_pTexture != NULL)
-	{
-		delete m_pTexture;
-	}
-	m_pTexture = new sf::Texture();
-	*m_pTexture = *(other.m_pTexture);
+//	if (m_pTexture != NULL)
+//	{
+//		delete m_pTexture;
+//	}
+//	m_pTexture = new sf::Texture();
+//	*m_pTexture = *(other.m_pTexture);
 
 	m_subSize = other.m_subSize;
 
@@ -70,20 +70,20 @@ CTexture& CTexture::operator=(const CTexture& other)
 }
 
 
-sf::Texture* CTexture::getTexture() const
-{
-	return m_pTexture;
-}
+//sf::Texture* CTexture::getTexture() const
+//{
+//	return m_pTexture;
+//}
 
 
-void CTexture::setTexture(sf::Texture* texture)
-{
-	if (m_pTexture != NULL)
-	{
-		delete m_pTexture;
-	}
-	m_pTexture = texture;
-}
+//void CTexture::setTexture(sf::Texture* texture)
+//{
+//	if (m_pTexture != NULL)
+//	{
+//		delete m_pTexture;
+//	}
+//	m_pTexture = texture;
+//}
 
 
 sf::Vector2<int> CTexture::getSubNum() const
@@ -100,10 +100,17 @@ sf::Vector2<int> CTexture::getSubSize() const
 
 void CTexture::load(std::string fileName)
 {
-	bool isLoaded = m_pTexture->loadFromFile(fileName);
+//	bool isLoaded = m_pTexture->loadFromFile(fileName);
+//#ifdef DEBUG
+//	assert(isLoaded);
+//#endif
+//	m_pTexture->setSmooth(true);
+//	m_pTexture->setRepeated(false);
+
+	bool isLoaded = loadFromFile(fileName);
 #ifdef DEBUG
 	assert(isLoaded);
 #endif
-	m_pTexture->setSmooth(true);
-	m_pTexture->setRepeated(false);
+	setSmooth(true);
+	setRepeated(false);
 }

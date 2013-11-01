@@ -570,7 +570,7 @@ void CAtomicVoxel::setScreenPos()
 {
 	m_screenPos = m_gridPos;
 	m_pGrid->gridToScreen(&m_screenPos);
-	m_pSprite->setPosition(m_screenPos);
+	m_pSprite->setPosition(m_screenPos.x, m_screenPos.y);
 }
 
 

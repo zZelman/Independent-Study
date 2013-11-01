@@ -10,7 +10,7 @@
 
 #include "include_sfml.h"
 
-class CTexture
+class CTexture : public sf::Texture
 {
 public:
 	CTexture();
@@ -23,10 +23,10 @@ public:
 	CTexture& operator=(const CTexture& other);
 
 	// whole image represented with a texture
-	sf::Texture* getTexture() const;
+//	sf::Texture* getTexture() const;
 
 	// whole image represented with a texture
-	void setTexture(sf::Texture* texture);
+//	void setTexture(sf::Texture* texture);
 
 	// * LENGTH number of sub-section images on the texture
 	// * x = cols; y = rows
@@ -41,7 +41,7 @@ public:
 
 private:
 	// whole image represented with a texture
-	sf::Texture* m_pTexture;
+//	sf::Texture* m_pTexture;
 
 	// * LENGTH height/width of the sub-section images on the texture
 	// * x = width; y = height

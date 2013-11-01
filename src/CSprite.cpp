@@ -15,7 +15,7 @@ CSprite::CSprite()
 {
 	m_pWindow = NULL;
 	m_pTexture = NULL;
-	m_pSprite = NULL;
+//	m_pSprite = NULL;
 }
 
 
@@ -27,8 +27,9 @@ CSprite::CSprite(sf::RenderWindow* pWindow,
 
 	m_pTexture = pTexture;
 
-	m_pSprite = new sf::Sprite();
-	m_pSprite->setTexture(*(m_pTexture->getTexture()));
+//	m_pSprite = new sf::Sprite();
+//	m_pSprite->setTexture(*(m_pTexture->getTexture()));
+	setTexture(*m_pTexture);
 
 	m_currSub = currSub;
 	setSubImage(&currSub);
@@ -38,8 +39,8 @@ CSprite::CSprite(sf::RenderWindow* pWindow,
 
 CSprite::~CSprite()
 {
-	delete m_pSprite;
-	m_pSprite = NULL;
+//	delete m_pSprite;
+//	m_pSprite = NULL;
 
 	// m_pWindow && m_pTexture are managed externally
 }
@@ -54,8 +55,8 @@ CSprite::CSprite(const CSprite& other)
 
 	m_pTexture = other.m_pTexture; // managed externally
 
-	m_pSprite = new sf::Sprite();
-	*m_pSprite = *(other.m_pSprite);
+//	m_pSprite = new sf::Sprite();
+//	*m_pSprite = *(other.m_pSprite);
 }
 
 
@@ -74,21 +75,21 @@ CSprite& CSprite::operator=(const CSprite& other)
 	m_pTexture = other.m_pTexture; // managed externally
 
 	// [QUESTION] should i conditionally delete?
-	if (m_pSprite != NULL)
-	{
-		delete m_pSprite;
-	}
-	m_pSprite = new sf::Sprite();
-	*m_pSprite = *(other.m_pSprite);
+//	if (m_pSprite != NULL)
+//	{
+//		delete m_pSprite;
+//	}
+//	m_pSprite = new sf::Sprite();
+//	*m_pSprite = *(other.m_pSprite);
 
 	return *this;
 }
 
 
-sf::FloatRect CSprite::getRect()
-{
-	return m_pSprite->getGlobalBounds();
-}
+//sf::FloatRect CSprite::getRect()
+//{
+//	return m_pSprite->getGlobalBounds();
+//}
 
 
 void CSprite::setSubImage(int col, int row)
@@ -129,51 +130,51 @@ void CSprite::setSubImage(const sf::Vector2<int>* newSub)
 }
 
 
-void CSprite::setPosition(float x, float y)
-{
-	m_pSprite->setPosition(x, y);
-}
+//void CSprite::setPosition(float x, float y)
+//{
+//	m_pSprite->setPosition(x, y);
+//}
 
 
-void CSprite::setPosition(const sf::Vector2<int>& pos)
-{
-	setPosition(pos.x, pos.y);
-}
+//void CSprite::setPosition(const sf::Vector2<int>& pos)
+//{
+//	setPosition(pos.x, pos.y);
+//}
 
 
-void CSprite::setScale(float x, float y)
-{
-	m_pSprite->setScale(x, y);
-}
+//void CSprite::setScale(float x, float y)
+//{
+//	m_pSprite->setScale(x, y);
+//}
 
 
-void CSprite::setScale(const sf::Vector2<float>* scale)
-{
-	m_pSprite->setScale(*scale);
-}
+//void CSprite::setScale(const sf::Vector2<float>* scale)
+//{
+//	m_pSprite->setScale(*scale);
+//}
 
 
-void CSprite::scale(float x, float y)
-{
-	m_pSprite->scale(x, y);
-}
+//void CSprite::scale(float x, float y)
+//{
+//	m_pSprite->scale(x, y);
+//}
 
 
-void CSprite::scale(const sf::Vector2<float>* scale)
-{
-	m_pSprite->scale(*scale);
-}
+//void CSprite::scale(const sf::Vector2<float>* scale)
+//{
+//	m_pSprite->scale(*scale);
+//}
 
 
-void CSprite::move(float x, float y)
-{
-	m_pSprite->move(x, y);
-}
+//void CSprite::move(float x, float y)
+//{
+//	m_pSprite->move(x, y);
+//}
 
 
 void CSprite::render()
 {
-	m_pWindow->draw(*m_pSprite);
+	m_pWindow->draw(*this);
 }
 
 void CSprite::chooseSubImage()
@@ -183,5 +184,5 @@ void CSprite::chooseSubImage()
 	int h = m_pTexture->getSubSize().y;
 	int topX = w * (m_currSub.x - 1);
 	int topY = h * (m_currSub.y - 1);
-	m_pSprite->setTextureRect(sf::IntRect(topX, topY, w, h));
+	setTextureRect(sf::IntRect(topX, topY, w, h));
 }
