@@ -197,12 +197,16 @@ bool CGame::input_user(sf::Event* pEvent)
 	if (pEvent->type == sf::Event::MouseButtonPressed) // press
 	{
 		if (m_pGrid->userInput_mousePress(pEvent) == true)
+		{
 			return true;
+		}
 	}
 	else if (pEvent->type == sf::Event::MouseButtonReleased) // release
 	{
 		if (m_pGrid->userInput_mouseRelease(pEvent) == true)
+		{
 			return true;
+		}
 	}
 
 	return false;
@@ -250,6 +254,14 @@ void CGame::render()
 
 	// drawing here...
 	m_pGrid->render();
+
+//	sf::Vertex line[] =
+//	{
+//			sf::Vertex(sf::Vector2f(10, 10), sf::Color::Blue),
+//			sf::Vertex(sf::Vector2f(150, 150), sf::Color::Blue)
+//	};
+//
+//	m_pGameWindow->draw(line, 2, sf::Lines);
 
 	m_pGameWindow->display(); // displays what has been rendered since last clear
 }

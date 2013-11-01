@@ -159,7 +159,9 @@ bool CGrid::userInput_keyPress(sf::Event* pEvent)
 	case sf::Keyboard::Left:
 		{
 			if (m_pTestAV == NULL)
+			{
 				break;
+			}
 			m_pTestAV->move(-1, 0);
 			return true;
 			break;
@@ -167,7 +169,9 @@ bool CGrid::userInput_keyPress(sf::Event* pEvent)
 	case sf::Keyboard::Right:
 		{
 			if (m_pTestAV == NULL)
+			{
 				break;
+			}
 			m_pTestAV->move(1, 0);
 			return true;
 			break;
@@ -175,7 +179,9 @@ bool CGrid::userInput_keyPress(sf::Event* pEvent)
 	case sf::Keyboard::Up:
 		{
 			if (m_pTestAV == NULL)
+			{
 				break;
+			}
 			m_pTestAV->move(0, -1);
 			return true;
 			break;
@@ -183,7 +189,9 @@ bool CGrid::userInput_keyPress(sf::Event* pEvent)
 	case sf::Keyboard::Down:
 		{
 			if (m_pTestAV == NULL)
+			{
 				break;
+			}
 			m_pTestAV->move(0, 1);
 			return true;
 			break;
@@ -240,7 +248,9 @@ bool CGrid::userInput_mousePress(sf::Event* pEvent)
 			{
 				targetedAV->damage_remove();
 				if (targetedAV == m_pTestAV)
+				{
 					m_pTestAV = NULL;
+				}
 				delete targetedAV;
 			}
 			break;
