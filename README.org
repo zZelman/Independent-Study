@@ -1,0 +1,4 @@
+#+TITLE: Independent-Study
+#+AUTHOR: Kyle Avrett
+
+This was my independent study in college. It is a very simple video game using a doubly linked, N-dimensional tree to create a growing collection of boxes. Each time a box touches another box, the non-moving box is bound to the moving-box. It was eventually going to become a real time strategy video game where the player could grow and control whole collections of boxes, but the semester finished before I could make that happen.
